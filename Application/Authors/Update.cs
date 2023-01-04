@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Application.Authors
 {
-    public class Edit
+    public class Update
     {
         public class Request : IRequest<bool>
         {

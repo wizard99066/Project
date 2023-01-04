@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Domain.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230103095659_AddGenres")]
-    partial class AddGenres
+    [Migration("20230104094523_Initialize")]
+    partial class Initialize
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,12 +33,14 @@ namespace Domain.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<DateTime>("Birthday")
+                    b.Property<DateTime?>("Birthday")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -103,15 +105,11 @@ namespace Domain.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<long?>("BookId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BookId");
 
                     b.ToTable("Genres");
                 });
@@ -139,9 +137,6 @@ namespace Domain.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<long?>("BookId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("City")
                         .HasColumnType("text");
 
@@ -150,8 +145,6 @@ namespace Domain.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BookId");
 
                     b.ToTable("Publishings");
                 });
@@ -385,17 +378,10 @@ namespace Domain.Migrations
                     b.Navigation("Book");
                 });
 
-            modelBuilder.Entity("Domain.Models.Books.Genre", b =>
-                {
-                    b.HasOne("Domain.Models.Books.Book", null)
-                        .WithMany("GenreBooks")
-                        .HasForeignKey("BookId");
-                });
-
             modelBuilder.Entity("Domain.Models.Books.GenreBook", b =>
                 {
                     b.HasOne("Domain.Models.Books.Book", "Book")
-                        .WithMany()
+                        .WithMany("GenreBooks")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -411,17 +397,10 @@ namespace Domain.Migrations
                     b.Navigation("Genre");
                 });
 
-            modelBuilder.Entity("Domain.Models.Books.Publishing", b =>
-                {
-                    b.HasOne("Domain.Models.Books.Book", null)
-                        .WithMany("Publishings")
-                        .HasForeignKey("BookId");
-                });
-
             modelBuilder.Entity("Domain.Models.Books.PublishingBook", b =>
                 {
                     b.HasOne("Domain.Models.Books.Book", "Book")
-                        .WithMany()
+                        .WithMany("Publishings")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

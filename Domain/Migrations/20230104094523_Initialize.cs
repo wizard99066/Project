@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Domain.Migrations
 {
     /// <inheritdoc />
-    public partial class Start : Migration
+    public partial class Initialize : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -57,9 +57,10 @@ namespace Domain.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    FirstName = table.Column<string>(type: "text", nullable: false),
+                    FirstName = table.Column<string>(type: "text", nullable: true),
                     LastName = table.Column<string>(type: "text", nullable: false),
-                    Birthday = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    Birthday = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -79,6 +80,33 @@ namespace Domain.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Books", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Genres",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Genres", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Publishings",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    City = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Publishings", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -214,42 +242,51 @@ namespace Domain.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Genre",
+                name: "GenreBooks",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    BookId = table.Column<long>(type: "bigint", nullable: true)
+                    GenreId = table.Column<long>(type: "bigint", nullable: false),
+                    BookId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Genre", x => x.Id);
+                    table.PrimaryKey("PK_GenreBooks", x => new { x.GenreId, x.BookId });
                     table.ForeignKey(
-                        name: "FK_Genre_Books_BookId",
+                        name: "FK_GenreBooks_Books_BookId",
                         column: x => x.BookId,
                         principalTable: "Books",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_GenreBooks_Genres_GenreId",
+                        column: x => x.GenreId,
+                        principalTable: "Genres",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Publishing",
+                name: "PublishingBooks",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    City = table.Column<string>(type: "text", nullable: true),
-                    BookId = table.Column<long>(type: "bigint", nullable: true)
+                    PublishingId = table.Column<long>(type: "bigint", nullable: false),
+                    BookId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Publishing", x => x.Id);
+                    table.PrimaryKey("PK_PublishingBooks", x => new { x.PublishingId, x.BookId });
                     table.ForeignKey(
-                        name: "FK_Publishing_Books_BookId",
+                        name: "FK_PublishingBooks_Books_BookId",
                         column: x => x.BookId,
                         principalTable: "Books",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PublishingBooks_Publishings_PublishingId",
+                        column: x => x.PublishingId,
+                        principalTable: "Publishings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -300,13 +337,13 @@ namespace Domain.Migrations
                 column: "BookId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Genre_BookId",
-                table: "Genre",
+                name: "IX_GenreBooks_BookId",
+                table: "GenreBooks",
                 column: "BookId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Publishing_BookId",
-                table: "Publishing",
+                name: "IX_PublishingBooks_BookId",
+                table: "PublishingBooks",
                 column: "BookId");
         }
 
@@ -332,10 +369,10 @@ namespace Domain.Migrations
                 name: "AuthorBooks");
 
             migrationBuilder.DropTable(
-                name: "Genre");
+                name: "GenreBooks");
 
             migrationBuilder.DropTable(
-                name: "Publishing");
+                name: "PublishingBooks");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -347,7 +384,13 @@ namespace Domain.Migrations
                 name: "Authors");
 
             migrationBuilder.DropTable(
+                name: "Genres");
+
+            migrationBuilder.DropTable(
                 name: "Books");
+
+            migrationBuilder.DropTable(
+                name: "Publishings");
         }
     }
 }

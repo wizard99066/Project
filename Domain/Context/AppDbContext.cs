@@ -40,6 +40,7 @@ namespace Domain.Context
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            builder.Entity<AuthorBook>().HasKey(sc => new { sc.AuthorId, sc.BookId });
             builder.Entity<GenreBook>().HasKey(sc => new { sc.GenreId, sc.BookId });
             builder.Entity<PublishingBook>().HasKey(sc => new { sc.PublishingId, sc.BookId });
 

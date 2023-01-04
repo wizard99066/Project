@@ -10,5 +10,6 @@ namespace Domain.Models.Books
     {
         public string Name { get; set; }
         public string? City { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

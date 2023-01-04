@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Domain.Models.Books
+﻿namespace Domain.Models.Books
 {
-    public class AuthorBook : IId
+    public class AuthorBook
     {
         public long AuthorId { get; set; }
         public Author Author { get; set; }
