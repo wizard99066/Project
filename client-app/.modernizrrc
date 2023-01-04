@@ -1,0 +1,13 @@
+module.exports = {
+    "minify": true,
+    "options": [
+        "mq",
+        ...
+            "prefixed",
+    ],
+    "feature-detects": [
+        "test/css/all",
+        ...
+            "test/css/animations",
+    ]
+}

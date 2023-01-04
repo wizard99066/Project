@@ -1,0 +1,29 @@
+.custom-input{
+  height: 40px;
+}
+
+.custom-input input{
+  height: none;
+}
+
+.custom-input .ant-input-wrapper {
+  height: 40px;
+}
+
+.custom-input .ant-input-wrapper input{
+  height: 40px;
+}
+
+.custom-input .ant-input-group .ant-input:hover{
+  z-index: 0;
+}
+
+.custom-input .ant-select-selector{
+  height: 40px;
+  align-items: center;
+  line-height: 40px;
+}
+
+.custom-input .ant-input-group-addon button {
+  height: 100%;
+}

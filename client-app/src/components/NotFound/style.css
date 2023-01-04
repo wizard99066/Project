@@ -1,0 +1,39 @@
+.not-found{
+  margin: auto;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.not-found p{
+  font-style: normal;
+  font-weight: 300;
+  font-size: 32px;
+  line-height: 39px;
+  text-align: center;
+  color: #431F38;
+  margin-bottom: 64px;
+}
+
+.not-found h3{
+  font-style: normal;
+  font-weight: bold;
+  font-size: 70px;
+  line-height: 85px;
+  text-align: center;
+  color: #FDAE16;
+  margin-bottom: 0px;
+}
+
+.not-found span{
+  display: block;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 17px;
+  text-decoration-line: underline;
+  color: #000000;
+  margin-bottom: 64px;
+}

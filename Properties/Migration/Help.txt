@@ -1,0 +1,3 @@
+add-migration NewMigration -context AppDbContext -project Domain
+remove-migration -context AppDbContext -project Domain
+update-database -context AppDbContext -project Domain

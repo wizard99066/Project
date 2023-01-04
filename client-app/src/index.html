@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="img/favicon.ico" />
+  <link href="img/fonts/fonts.css"
+    rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <meta name=”robots” content=”nofollow”>
+  <title>Проект</title>
+  <style>
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script>
+    window.onscroll = function () {
+      scrollFunction()
+    };
+
+    function scrollFunction() {
+    }
+    String.prototype.format = function(){
+      const args = arguments;
+      return this.replace(/\{(\d+)\}/g, function(m,n){
+        return args[n] ? args[n] : m;
+      });
+    };
+    String.prototype.endsWith = function (search, this_len){
+      if (this_len === undefined || this_len >this.length)
+        this_len = this.length
+      return this.substring(this_len - search.length, this_len) === search
+    }
+  </script>
+  <script nomodule="" src="https://unpkg.com/ionicons@5.1.2/dist/ionicons/ionicons.js"></script>
+</body>
+</html>

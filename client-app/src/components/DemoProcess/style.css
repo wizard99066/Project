@@ -1,0 +1,315 @@
+.container {
+  width: 100%;
+  height: 300px;
+  background: linear-gradient(180deg, rgba(240,242,245,1) 0%, rgba(239,239,239,1) 36%, rgba(239,240,240,1) 55%, rgba(239,241,242,1) 74%, rgba(240,242,245,1) 100%);;
+  position: relative;
+}
+
+.container span {
+  /* color: white; */
+  position: absolute;
+  font-size: 500%;
+}
+
+.container div:nth-child(1) {
+  top: 112px;
+  left: 166px;
+}
+
+.container div:nth-child(2) {
+  top: 20px;
+  left: 348px;
+}
+
+.container div:nth-child(3) {
+  top: 200px;
+  left: 488px;
+}
+
+.container div:nth-child(4) {
+  top: 20px;
+  left: 703px;
+}
+
+.container div:nth-child(5) {
+  top: 207px;
+  left: 927px;
+}
+
+.container div:nth-child(6) {
+  top: 20px;
+  left: 1060px;
+}
+
+.container div:nth-child(7) {
+  top: 200px;
+  left: 1309px;
+}
+
+.container div:nth-child(8) {
+  top: 20px;
+  left: 1422px;
+}
+
+.container div:nth-child(9) {
+  top: 166px;
+  left: 1677px;
+}
+
+.container > div:nth-child(n) > .description_step_demo {
+  color: black;
+  width: 160px;
+  height: 60px;
+  position: absolute;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  font-size: 100%;
+  font-family: "Nanum Gothic";
+  padding: 10px;
+  font-weight: 100;
+}
+
+.container > div:nth-child(n) > .description_step_demo::after {
+  content: "";
+  width: 170px;
+  height: 70px;
+  background-color: rgba(239,240,240,1);
+  position: absolute;
+  padding: 10px;
+  z-index: 10;
+  left: -5px;
+}
+
+.container > div:nth-child(1) > .description_step_demo {
+  top: -64px;
+  left: -98px;
+  transform: rotate(-32deg);
+  background: linear-gradient(
+    149deg,
+    rgba(196, 0, 0, 1) 0%,
+    rgba(255, 255, 255, 1) 37%,
+    rgba(254, 254, 254, 1) 70%,
+    rgba(201, 129, 2, 1) 100%
+  );
+}
+
+.container > div:nth-child(1) > .description_step_demo::after {
+  animation: open_description 0.7s linear;
+  animation-fill-mode: forwards;
+  z-index: 10;
+  left: -5px;
+}
+
+.container > div:nth-child(2) > .description_step_demo {
+  top: -7px;
+  left: 98px;
+  opacity: 0;
+  background: linear-gradient(
+    149deg,
+    rgba(201, 129, 2, 1) 0%,
+    rgba(255, 255, 255, 1) 37%,
+    rgba(254, 254, 254, 1) 70%,
+    rgba(139, 146, 34, 1) 100%
+  );
+  animation: open_description_opacity 1s 5s linear;
+  animation-fill-mode: forwards;
+}
+
+.container > div:nth-child(2) > .description_step_demo::after {
+  content: none;
+}
+
+.container > div:nth-child(3) > .description_step_demo {
+  top: 56px;
+  left: -162px;
+  opacity: 0;
+  background: linear-gradient(
+    149deg,
+    rgba(139, 146, 34, 1) 0%,
+    rgba(255, 255, 255, 1) 37%,
+    rgba(254, 254, 254, 1) 70%,
+    rgba(2, 173, 76, 1) 100%
+  );
+  animation: open_description_opacity 0.5s 7.5s linear;
+  animation-fill-mode: forwards;
+}
+
+.container > div:nth-child(3) > .description_step_demo::after {
+  content: none;
+}
+
+.container > div:nth-child(4) > .description_step_demo {
+  top: -7px;
+  left: 96px;
+  height: 75px;
+  opacity: 0;
+  background: linear-gradient(
+    149deg,
+    rgba(2, 173, 76, 1) 0%,
+    rgba(255, 255, 255, 1) 37%,
+    rgba(254, 254, 254, 1) 70%,
+    rgba(2, 187, 157, 1) 100%
+  );
+  animation: open_description_opacity 1s 10.5s linear;
+  animation-fill-mode: forwards;
+}
+
+.container > div:nth-child(4) > .description_step_demo::after {
+  content: none;
+}
+
+.container > div:nth-child(5) > .description_step_demo {
+  top: -10px;
+  left: -169px;
+  opacity: 0;
+  background: linear-gradient(
+    149deg,
+    rgba(2, 187, 157, 1) 0%,
+    rgba(255, 255, 255, 1) 37%,
+    rgba(254, 254, 254, 1) 70%,
+    rgba(50, 150, 174, 1) 100%
+  );
+  animation: open_description_opacity 1s 15.5s linear;
+  animation-fill-mode: forwards;
+}
+
+.container > div:nth-child(5) > .description_step_demo::after {
+  content: none;
+}
+
+.container > div:nth-child(6) > .description_step_demo {
+  top: -28px;
+  left: 110px;
+  opacity: 0;
+  background: linear-gradient(
+    149deg,
+    rgba(50, 150, 174, 1) 0%,
+    rgba(255, 255, 255, 1) 37%,
+    rgba(254, 254, 254, 1) 70%,
+    rgba(25, 95, 182, 1) 100%
+  );
+  animation: open_description_opacity 0.5s 20.5s linear;
+  animation-fill-mode: forwards;
+}
+
+.container > div:nth-child(6) > .description_step_demo::after {
+  content: none;
+}
+
+.container > div:nth-child(7) > .description_step_demo {
+  top: 55px;
+  left: 38px;
+  transform: rotate(-23deg);
+  height: 75px;
+  opacity: 0;
+  background: linear-gradient(
+    149deg,
+    rgba(25, 95, 182, 1) 0%,
+    rgba(255, 255, 255, 1) 37%,
+    rgba(254, 254, 254, 1) 70%,
+    rgba(25, 33, 176, 1) 100%
+  );
+  animation: open_description_opacity 0.5s 24s linear;
+  animation-fill-mode: forwards;
+}
+
+.container > div:nth-child(7) > .description_step_demo::after {
+  content: none;
+}
+
+.container > div:nth-child(8) > .description_step_demo {
+  top: 7px;
+  left: 82px;
+  transform: rotate(14deg);
+  opacity: 0;
+  background: linear-gradient(
+    149deg,
+    rgba(25, 33, 176, 1) 0%,
+    rgba(255, 255, 255, 1) 37%,
+    rgba(254, 254, 254, 1) 70%,
+    rgba(104, 25, 153, 1) 100%
+  );
+  animation: open_description_opacity 1s 27s linear;
+  animation-fill-mode: forwards;
+}
+
+.container > div:nth-child(8) > .description_step_demo::after {
+  content: none;
+}
+
+.container > div:nth-child(9) > .description_step_demo {
+  top: 82px;
+  left: 28px;
+  transform: rotate(-21deg);
+  opacity: 0;
+  background: linear-gradient(
+    149deg,
+    rgba(104, 25, 153, 1) 0%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  animation: open_description_opacity 0.5s 32s linear;
+  animation-fill-mode: forwards;
+}
+
+.container > div:nth-child(9) > .description_step_demo::after {
+  content: none;
+}
+
+@keyframes open_description_opacity {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes open_description {
+  0% {
+  }
+  80% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 0;
+  }
+  99% {
+    width: 0px;
+    transform: translate(-20px);
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes line1 {
+  0% {
+    width: 0;
+    background-color: green;
+  }
+  100% {
+    background-color: white;
+    width: 100%;
+  }
+}
+
+.path {
+  stroke: "white";
+}
+
+.demo_svg #e3_path_2 {
+  animation: path 40s 2s linear;
+  stroke-dasharray: 5000;
+  stroke-dashoffset: 5000;
+  animation-fill-mode: forwards;
+}
+
+@keyframes path {
+  from {
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}

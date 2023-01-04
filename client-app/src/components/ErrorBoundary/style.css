@@ -1,0 +1,17 @@
+.something-wrong{
+  width: 100%;
+  margin: auto;
+  margin-left: 0px;
+}
+
+.something-wrong span{
+  display: block;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 17px;
+  text-decoration-line: underline;
+  color: #000000;
+  margin-bottom: 64px;
+  text-align: center;
+}

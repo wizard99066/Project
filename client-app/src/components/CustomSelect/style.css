@@ -1,0 +1,40 @@
+.custom-select{
+  height: 40px;
+}
+.custom-select:not(.ant-select-multiple) .ant-select-selection-item{
+  /* line-height: 40px!important; */
+}
+
+.custom-select .ant-select-multiple .ant-select-selection-item{
+  height:32px;
+  line-height: 32px;
+}
+
+.custom-select .ant-select-multiple .ant-select-selection-overflow-item{
+  align-self:auto;
+}
+
+.custom-select .ant-input-affix-wrapper{
+  padding: 0px 11px;
+}
+
+.custom-select .ant-select-arrow{
+  right: 16px;
+}
+
+.custom-select .ant-select-selector{
+  min-height: 40px!important;
+  align-items: center;
+}
+
+.custom-select .ant-select-selector input{
+  min-height: 40px!important;
+}
+
+.custom-select .ant-select-selector .ant-select-selection-overflow input{
+  min-height: 30px!important;
+}
+
+.custom-select:hover .ant-select-arrow{
+  display: none;
+}

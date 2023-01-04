@@ -1,0 +1,47 @@
+
+.ant-breadcrumb{
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 20px;
+  color: #000000;
+  margin-top: 64px;
+  margin-left: 82px;
+  margin-bottom: 64px;
+}
+
+.ant-breadcrumb ol { 
+  display: flex; 
+  flex-wrap: wrap; 
+  margin: 0px; 
+  padding: 0px; 
+  list-style: none; 
+}
+
+.ant-breadcrumb ol li:last-child .ant-breadcrumb-separator{
+  display: none;
+}
+
+.back + .ant-breadcrumb-separator{
+  transform: rotate(180deg);
+}
+
+.ant-breadcrumb-separator{
+  margin-left: 18px;
+  margin-right: 14px;
+  display: inline-flex;
+}
+
+.ant-breadcrumb span:last-child .ant-breadcrumb-separator{
+  display: none;
+}
+
+.ant-breadcrumb a{
+  color: #000000;
+
+}
+
+.ant-breadcrumb a:hover{
+  color: #FDAE16;
+}
