@@ -42,6 +42,7 @@ namespace Domain.Context
             base.OnModelCreating(builder);
             builder.Entity<GenreBook>().HasKey(sc => new { sc.GenreId, sc.BookId });
             builder.Entity<PublishingBook>().HasKey(sc => new { sc.PublishingId, sc.BookId });
+
             builder.Entity<User>()
                .HasMany(e => e.UserRoles)
                .WithOne()

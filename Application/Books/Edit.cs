@@ -52,9 +52,9 @@ namespace Application.Books
                 book.Year = request.Year.HasValue ? request.Year.Value : 0;
                 book.Name = request.Name;
                 book.Description = request.Description;
-                   book.GenreBooks = listGenre;
-                book.AuthorBooks = listAuthor;
-               book.Publishings = listPublishings;
+               //    book.GenreBooks = listGenre;
+               // book.AuthorBooks = listAuthor;
+               //book.Publishings = listPublishings;
                 _dbContext.Books.Update(book);
                 return _dbContext.SaveChanges() > 0;
             }

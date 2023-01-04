@@ -45,16 +45,16 @@ namespace Application.Books
                 var listGenre = _dbContext.Genres.ToList();
                 var listAuthor = _dbContext.Authors.ToList();
                 var listPublishings= _dbContext.Publishings.ToList();
-                var book = new Book{
-                    Year = request.Year.HasValue ? request.Year.Value : 0,
-                    Name = request.Name,
-                    Description = request.Description,
-                    GenreBooks = listGenre,
-                    AuthorBooks=listAuthor,
-                    Publishings=listPublishings,
-                };
+                //var book = new Book{
+                //    Year = request.Year.HasValue ? request.Year.Value : 0,
+                //    Name = request.Name,
+                //    Description = request.Description,
+                //    GenreBooks = listGenre,
+                //    AuthorBooks=listAuthor,
+                //    Publishings=listPublishings,
+                //};
                 
-                _dbContext.AddAsync(book);
+                //_dbContext.AddAsync(book);
 
                 return _dbContext.SaveChanges() > 0;
             }

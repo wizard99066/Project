@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Application.Authors
 {
-    public class Delete
+    public class Restore
     {
         public class Request : IRequest<bool>
         {
@@ -39,7 +39,7 @@ namespace Application.Authors
                 if (author == null)
                     throw new RestException(System.Net.HttpStatusCode.NotFound, "Автор не найден.");
 
-                author.IsDeleted = true;
+                author.IsDeleted = false;
 
                 return _dbContext.SaveChanges() > 0;
             }

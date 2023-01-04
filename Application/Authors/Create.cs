@@ -1,32 +1,29 @@
 ﻿using Domain.Context;
+using Domain.Errors;
 using Domain.Models.Books;
 using FluentValidation;
 using MediatR;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Application.Authors
 {
-    public class Add
+    public class Create
     {
-
         public class Request : IRequest<bool>
         {
             public string? FirstName { get; set; }
             public string LastName { get; set; }
             public DateTime? Birthday { get; set; }
-            public List<long> Books { get; set; }
-
         }
+
         public class RequestValidator : AbstractValidator<Request>
         {
             public RequestValidator()
             {
-                RuleFor(r => r.LastName).MinimumLength(2);
+                RuleFor(r => r.LastName).NotEmpty().MinimumLength(2);
             }
         }
 
@@ -40,30 +37,25 @@ namespace Application.Authors
 
             public async Task<bool> Handle(Request request, CancellationToken cancellationToken)
             {
-                //var listAuthorBooks = _dbContext.AuthorBooks.ToList();
-                var authorBooks = new List<AuthorBook>();
+                request.FirstName = request.FirstName?.Trim();
+                request.LastName = request.LastName.Trim();
+                var lowerFirstName = request.FirstName?.ToLower();
+                var anyAuthor = _dbContext.Authors
+                    .Any(a => a.FirstName.ToLower() == lowerFirstName && a.LastName.ToLower() == request.LastName.ToLower() && a.Birthday == request.Birthday);
+                if (anyAuthor)
+                    throw new RestException(System.Net.HttpStatusCode.BadRequest, "Данный автор уже присутствует.");
 
                 var author = new Author
                 {
                     FirstName = request.FirstName,
                     LastName = request.LastName,
-                    Birthday = request.Birthday,
-                    //AuthorBooks = AuthorBooks,
-
+                    Birthday = request.Birthday?.Date,
                 };
 
-                request.Books?.ForEach(bookId =>
-                 authorBooks.Add(new AuthorBook() { Author = author, BookId = bookId })
-                );
-
-                await _dbContext.AddAsync(author);
-
-                _dbContext.AuthorBooks.AddRange(authorBooks);
+                await _dbContext.Authors.AddAsync(author);
 
                 return _dbContext.SaveChanges() > 0;
             }
-
         }
-
     }
 }

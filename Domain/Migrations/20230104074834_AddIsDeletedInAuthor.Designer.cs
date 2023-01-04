@@ -3,6 +3,7 @@ using System;
 using Domain.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Domain.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230104074834_AddIsDeletedInAuthor")]
+    partial class AddIsDeletedInAuthor
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,6 +36,9 @@ namespace Domain.Migrations
                     b.Property<DateTime?>("Birthday")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<long?>("BookId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("FirstName")
                         .HasColumnType("text");
 
@@ -44,6 +50,8 @@ namespace Domain.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BookId");
 
                     b.ToTable("Authors");
                 });
@@ -102,11 +110,16 @@ namespace Domain.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
+                    b.Property<long?>("BookId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BookId");
 
                     b.ToTable("Genres");
                 });
@@ -134,6 +147,9 @@ namespace Domain.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
+                    b.Property<long?>("BookId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("City")
                         .HasColumnType("text");
 
@@ -142,6 +158,8 @@ namespace Domain.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BookId");
 
                     b.ToTable("Publishings");
                 });
@@ -356,6 +374,13 @@ namespace Domain.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Models.Books.Author", b =>
+                {
+                    b.HasOne("Domain.Models.Books.Book", null)
+                        .WithMany("AuthorBooks")
+                        .HasForeignKey("BookId");
+                });
+
             modelBuilder.Entity("Domain.Models.Books.AuthorBook", b =>
                 {
                     b.HasOne("Domain.Models.Books.Author", "Author")
@@ -365,7 +390,7 @@ namespace Domain.Migrations
                         .IsRequired();
 
                     b.HasOne("Domain.Models.Books.Book", "Book")
-                        .WithMany("AuthorBooks")
+                        .WithMany()
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -375,10 +400,17 @@ namespace Domain.Migrations
                     b.Navigation("Book");
                 });
 
+            modelBuilder.Entity("Domain.Models.Books.Genre", b =>
+                {
+                    b.HasOne("Domain.Models.Books.Book", null)
+                        .WithMany("GenreBooks")
+                        .HasForeignKey("BookId");
+                });
+
             modelBuilder.Entity("Domain.Models.Books.GenreBook", b =>
                 {
                     b.HasOne("Domain.Models.Books.Book", "Book")
-                        .WithMany("GenreBooks")
+                        .WithMany()
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -394,10 +426,17 @@ namespace Domain.Migrations
                     b.Navigation("Genre");
                 });
 
+            modelBuilder.Entity("Domain.Models.Books.Publishing", b =>
+                {
+                    b.HasOne("Domain.Models.Books.Book", null)
+                        .WithMany("Publishings")
+                        .HasForeignKey("BookId");
+                });
+
             modelBuilder.Entity("Domain.Models.Books.PublishingBook", b =>
                 {
                     b.HasOne("Domain.Models.Books.Book", "Book")
-                        .WithMany("Publishings")
+                        .WithMany()
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

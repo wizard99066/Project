@@ -11,9 +11,9 @@ namespace Domain.Models.Books
         public int Year { get; set; }
         public string Name { get; set; }
         public string? Description { get; set; }
-        public List<Author> AuthorBooks { get; set; }
-        public List<Publishing> Publishings { get; set; }
-        public List<Genre> GenreBooks { get; set; }
+        public List<AuthorBook> AuthorBooks { get; set; }
+        public List<PublishingBook> Publishings { get; set; }
+        public List<GenreBook> GenreBooks { get; set; }
 
     }
 }

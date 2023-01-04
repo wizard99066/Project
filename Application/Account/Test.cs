@@ -33,7 +33,7 @@ namespace Application.Account
 
             public async Task<string> Handle(Request request, CancellationToken cancellationToken)
             {
-                var book = _dbContext.Books.Where(book => book.AuthorBooks.Any(authorBook => authorBook.Author.LastName == "оруэл")).ToList();
+                //var book = _dbContext.Books.Where(book => book.AuthorBooks.Any(authorBook => authorBook.Author.LastName == "оруэл")).ToList();
                 //Book book = new Book();
                 //book.Year = 2000;
                 //book.Name = "Мы";
