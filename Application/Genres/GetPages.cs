@@ -1,5 +1,4 @@
-﻿using Application.Authors.Dto;
-using Domain.Context;
+﻿using Domain.Context;
 using FluentValidation;
 using MediatR;
 using System;
@@ -13,10 +12,10 @@ namespace Application.Genres
 {
     public class GetPages
     {
-        public class Request : IRequest<PageItems<AuthorDto>>
+        public class Request : IRequest<PageItems<GenreDto>>
         {
             public string? Name { get; set; }
-           public int Page { get; set; }
+            public int Page { get; set; }
             public int PageSize { get; set; }
         }
 
@@ -29,7 +28,7 @@ namespace Application.Genres
             }
         }
 
-        public class Handler : BaseService<AuthorDto>, IRequestHandler<Request, PageItems<AuthorDto>>
+        public class Handler : BaseService<GenreDto>, IRequestHandler<Request, PageItems<GenreDto>>
         {
             private readonly AppDbContext _dbContext;
             public Handler(AppDbContext dbContext)
@@ -37,23 +36,17 @@ namespace Application.Genres
                 _dbContext = dbContext;
             }
 
-            public async Task<PageItems<AuthorDto>> Handle(Request request, CancellationToken cancellationToken)
+            public async Task<PageItems<GenreDto>> Handle(Request request, CancellationToken cancellationToken)
             {
-                request.FirstName = request.FirstName?.Trim().ToLower();
-                request.LastName = request.LastName?.Trim().ToLower();
-                request.Birthday = request.Birthday?.Date;
-                var query = _dbContext.Authors
-                    .Where(a => !a.IsDeleted)
-                    .Where(a => string.IsNullOrEmpty(request.FirstName) || a.FirstName.ToLower().Contains(request.FirstName))
-                    .Where(a => string.IsNullOrEmpty(request.LastName) || a.LastName.ToLower().Contains(request.LastName))
-                    .Where(a => request.Birthday == null || a.Birthday < request.Birthday)
-                    .OrderBy(a => a.LastName).ThenBy(a => a.FirstName).ThenBy(a => a.Birthday)
-                    .Select(a => new AuthorDto
-                    {
-                        FirstName = a.FirstName,
-                        LastName = a.LastName,
-                        Birthday = a.Birthday.HasValue ? a.Birthday.Value.ToString("dd.MM.yyyy") : null,
-                    });
+                request.Name = request.Name?.Trim().ToLower();
+                var query = _dbContext.Genres
+     .Where(a => !a.IsDeleted)
+     .Where(a => string.IsNullOrEmpty(request.Name) || a.Name.ToLower().Contains(request.Name))
+          //.OrderBy(a => a.Name)
+     .Select(a => new GenreDto()
+     {
+         NameGenre = a.Name
+              });
                 var result = await ToPageAsync(query, request.Page, request.PageSize);
                 return result;
             }

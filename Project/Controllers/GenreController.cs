@@ -1,12 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using Application.Books;
+﻿using Application;
+using Application.Genres;
 using Domain.Models.Books;
-using Application;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using static Application.Genres.GenreDto;
 
 namespace Project.Controllers
 {
-    public class BooksController : BaseController
+    public class GenreController:BaseController
     {
         [HttpPost("Create")]
         public async Task<bool> Create([FromBody] Create.Request request)
@@ -32,12 +33,16 @@ namespace Project.Controllers
             return await Mediator.Send(request);
         }
 
-        [HttpGet("GetPages")]
-        public async Task<PageItems<BookDto>> GetPaged([FromHeader] GetPages.Request request)
+        [HttpGet("GetPaged")]
+        public async Task<PageItems<GenreDto>> GetPaged([FromHeader] GetPages.Request request)
         {
             return await Mediator.Send(request);
         }
 
-        
+        [HttpGet("GetAll")]
+        public async Task<PageItems<Genre>> GetAll([FromHeader] GetAll.Request request)
+        {
+            return await Mediator.Send(request);
+        }
     }
 }

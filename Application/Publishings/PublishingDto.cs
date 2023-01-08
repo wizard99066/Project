@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Application.Publishing
 {
-    public class GetPages
+    public class PublishingDto
     {
+        public string NamePublishing { get; set; }
     }
 }

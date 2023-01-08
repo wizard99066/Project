@@ -9,14 +9,15 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Genres
+
+namespace Application.Publishing
 {
     public class GetAll
     {
 
-        public class Request : IRequest<PageItems<Genre>>
+        public class Request : IRequest<PageItems<Publishing>>
         {
-            public string? NameGenre { get; set; }
+            public string? NamePublishing { get; set; }
             public int Page { get; set; }
             public int PageSize { get; set; }
         }
@@ -30,7 +31,7 @@ namespace Application.Genres
             }
         }
 
-        public class Handler : BaseService<Genre>, IRequestHandler<Request, PageItems<Genre>>
+        public class Handler : BaseService<Publishing>, IRequestHandler<Request, PageItems<Publishing>>
         {
             private readonly AppDbContext _dbContext;
             public Handler(AppDbContext dbContext)
@@ -38,16 +39,17 @@ namespace Application.Genres
                 _dbContext = dbContext;
             }
 
-            public async Task<PageItems<Genre>> Handle(Request request, CancellationToken cancellationToken)
+            public async Task<PageItems<Publishing>> Handle(Request request, CancellationToken cancellationToken)
             {
-                request.NameGenre = request.NameGenre?.Trim().ToLower();
-                 var query = _dbContext.Genres
-                     .Where(a => string.IsNullOrEmpty(request.NameGenre) || a.Name.ToLower().Contains(request.NameGenre))
-                     .OrderBy(a => a.Name);
+                request.NamePublishing = request.NamePublishing?.Trim().ToLower();
+                var query = _dbContext.Publishings
+                    .Where(a => string.IsNullOrEmpty(request.NamePublishing) || a.Name.ToLower().Contains(request.NamePublishing))
+                    .OrderBy(a => a.Name);
                 var result = await ToPageAsync(query, request.Page, request.PageSize);
                 return result;
             }
         }
+
 
     }
 }

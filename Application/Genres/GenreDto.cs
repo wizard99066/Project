@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Application.Genres
 {
-    internal class GenreDto
+    public class GenreDto
     {
+        public string NameGenre { get; set; }
     }
 }

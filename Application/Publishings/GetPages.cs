@@ -1,5 +1,5 @@
-﻿using Domain.Context;
-using Domain.Models.Books;
+﻿using Application.Publishing;
+using Domain.Context;
 using FluentValidation;
 using MediatR;
 using System;
@@ -9,14 +9,13 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Genres
+namespace Application.Publishing
 {
-    public class GetAll
+    public class GetPages
     {
-
-        public class Request : IRequest<PageItems<Genre>>
+        public class Request : IRequest<PageItems<PublishingDto>>
         {
-            public string? NameGenre { get; set; }
+            public string? Name { get; set; }
             public int Page { get; set; }
             public int PageSize { get; set; }
         }
@@ -30,7 +29,7 @@ namespace Application.Genres
             }
         }
 
-        public class Handler : BaseService<Genre>, IRequestHandler<Request, PageItems<Genre>>
+        public class Handler : BaseService<PublishingDto>, IRequestHandler<Request, PageItems<PublishingDto>>
         {
             private readonly AppDbContext _dbContext;
             public Handler(AppDbContext dbContext)
@@ -38,16 +37,20 @@ namespace Application.Genres
                 _dbContext = dbContext;
             }
 
-            public async Task<PageItems<Genre>> Handle(Request request, CancellationToken cancellationToken)
+            public async Task<PageItems<PublishingDto>> Handle(Request request, CancellationToken cancellationToken)
             {
-                request.NameGenre = request.NameGenre?.Trim().ToLower();
-                 var query = _dbContext.Genres
-                     .Where(a => string.IsNullOrEmpty(request.NameGenre) || a.Name.ToLower().Contains(request.NameGenre))
-                     .OrderBy(a => a.Name);
+                request.Name = request.Name?.Trim().ToLower();
+                var query = _dbContext.Genres
+     .Where(a => !a.IsDeleted)
+     .Where(a => string.IsNullOrEmpty(request.Name) || a.Name.ToLower().Contains(request.Name))
+     //.OrderBy(a => a.Name)
+     .Select(a => new PublishingDto()
+     {
+         NamePublishing = a.Name
+     });
                 var result = await ToPageAsync(query, request.Page, request.PageSize);
                 return result;
             }
         }
-
     }
 }
