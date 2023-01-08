@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Application.Books
 {
-    public class Edit
+    public class Update
     {
         public class Request : IRequest<bool>
         {
@@ -43,9 +43,9 @@ namespace Application.Books
 
             public async Task<bool> Handle(Request request, CancellationToken cancellationToken)
             {
-                var listGenre = _dbContext.Genres.ToList();
-                var listAuthor = _dbContext.Authors.ToList();
-                var listPublishings = _dbContext.Publishings.ToList();
+                //var listGenre = _dbContext.Genres.ToList();
+                //var listAuthor = _dbContext.Authors.ToList();
+               // var listPublishings = _dbContext.Publishings.ToList();
                 var book = _dbContext.Books.Where(b => b.Id== request.Id).FirstOrDefault();
                 if (book == null) throw new Exception("Книга не найдена");
                 book.Id = request.Id;
@@ -55,7 +55,7 @@ namespace Application.Books
                //    book.GenreBooks = listGenre;
                // book.AuthorBooks = listAuthor;
                //book.Publishings = listPublishings;
-                _dbContext.Books.Update(book);
+               // _dbContext.Books.Update(book);
                 return _dbContext.SaveChanges() > 0;
             }
 

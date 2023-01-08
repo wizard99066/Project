@@ -17,7 +17,6 @@ import {
 import history from "./helpers/history"
 import "./index.css"
 import "./App.css"
-import Footer from "./components/Footer/index"
 import byBY from 'antd/lib/locale/by_BY'
 import ruRU from 'antd/lib/locale/ru_RU'
 import moment from "moment"
@@ -60,7 +59,6 @@ const App = () => {
 							</ErrorBoundary>
 						</Content>
 					</Layout>
-					<Footer />
 				</Layout>
 			</ConfigProvider>
 		</Router>

@@ -1,5 +1,4 @@
 ﻿using Domain.Context;
-using Domain.Models.Books;
 using FluentValidation;
 using MediatR;
 using System;
@@ -8,11 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using static Application.Account.Login;
 
-namespace Application.Books
+namespace Application.Genres
 {
-    public class Delete
+    public class Restore
     {
         public class Request : IRequest<bool>
         {
@@ -37,12 +35,12 @@ namespace Application.Books
 
             public async Task<bool> Handle(Request request, CancellationToken cancellationToken)
             {
-                
-                var book = _dbContext.Books.Where(b => b.Id == request.Id).FirstOrDefault();
 
-                if (book == null) throw new Exception("Книга не найдена");
+                var genre = _dbContext.Genres.Where(b => b.Id == request.Id).FirstOrDefault();
 
-                book.IsDeleted = true;
+                if (genre == null) throw new Exception("Жанр не найдена");
+
+                genre.IsDeleted = true;
 
                 return _dbContext.SaveChanges() > 0;
             }

@@ -7,6 +7,23 @@ const LoadableHome = Loadable({
 	loading : () => <Loading />
 })
 
+const LoadableAuthors = Loadable({
+	loader  : () => import('../containers/Authors'),
+	loading : () => <Loading />
+})
+
+const LoadableLogin = Loadable({
+	loader  : () => import('../containers/Login'),
+	loading : () => <Loading />
+})
+const LoadablePasswordRecovery = Loadable({
+	loader  : () => import('../containers/PasswordRecovery'),
+	loading : () => <Loading />
+})
+
 export const homeLoadables = {
-	LoadableHome
+	LoadableHome,
+	LoadableAuthors,
+	LoadableLogin,
+	LoadablePasswordRecovery
 }

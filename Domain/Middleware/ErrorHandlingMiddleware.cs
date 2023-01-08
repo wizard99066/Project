@@ -63,6 +63,7 @@ namespace Domain.Middleware
                 {
                     code,
                     message,
+                    errors,
                     dataObject,
                     innerException
                 });

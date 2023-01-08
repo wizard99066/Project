@@ -42,7 +42,7 @@ namespace Application.Publishing
 
                 if (publishing == null) throw new Exception("Издательство не найдено");
 
-                _dbContext.Remove(publishing);
+                publishing.IsDeleted = true;
 
                 return _dbContext.SaveChanges() > 0;
             }

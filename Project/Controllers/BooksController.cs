@@ -7,11 +7,11 @@ namespace Project.Controllers
 {
     public class BooksController : BaseController
     {
-        [HttpGet("GetAll")]
+       /* [HttpGet("GetAll")]
         public async Task<string> GetAll([FromHeader] GetAll.Request request)
         {
             return await Mediator.Send(request);
-        }
+        }*/
         //[HttpGet("GetPaged")]
         //public async Task<string> GetPaged([FromHeader] GetPaged.Request request)
         //{

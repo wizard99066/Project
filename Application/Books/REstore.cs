@@ -10,20 +10,22 @@ using System.Threading.Tasks;
 
 namespace Application.Books
 {
-    public class GetAll
+    public class Restore
     {
+        public class Request : IRequest<bool>
+        {
+            public long Id { get; set; }
+        }
 
-        public class Request : IRequest<string>
-    {
-    }
         public class RequestValidator : AbstractValidator<Request>
         {
             public RequestValidator()
             {
+                RuleFor(r => r.Id).NotEmpty();
             }
         }
 
-        public class Handler : IRequestHandler<Request, string>
+        public class Handler : IRequestHandler<Request, bool>
         {
             private readonly AppDbContext _dbContext;
             public Handler(AppDbContext dbContext)
@@ -31,13 +33,18 @@ namespace Application.Books
                 _dbContext = dbContext;
             }
 
-            public async Task<string> Handle(Request request, CancellationToken cancellationToken)
+            public async Task<bool> Handle(Request request, CancellationToken cancellationToken)
             {
-                
-                return "1234";
+
+                var book = _dbContext.Books.Where(b => b.Id == request.Id).FirstOrDefault();
+
+                if (book == null) throw new Exception("Книга не найдена");
+
+                book.IsDeleted = true;
+
+                return _dbContext.SaveChanges() > 0;
             }
 
         }
-
     }
 }

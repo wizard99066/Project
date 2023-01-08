@@ -1,0 +1,40 @@
+.passwordRecovery__page {
+    background-color: rgba(62, 194, 223, 0.05);
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    gap: 60px;
+}
+.passwordRecovery__page h2 {
+    font-family: 'Kavivanar';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 60px;
+    line-height: 99.3%;
+    }
+    .passwordRecovery__wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        width: 800px;
+        margin: 0 auto;
+    }
+    
+    .passwordRecovery__button {
+        background-color: #FF800C;
+        width: 185px;
+        height: 50px;
+        font-family: 'Kavivanar';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 99.3%;
+    color: #FFFFFF;
+    border-radius: 0%;
+    flex-grow: 0;
+    }

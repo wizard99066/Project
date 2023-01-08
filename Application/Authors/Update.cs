@@ -51,7 +51,7 @@ namespace Application.Authors
                 author.LastName = request.LastName;
                 author.FirstName = request.FirstName;
                 author.Birthday = request.Birthday?.Date;
-                _dbContext.Authors.Update(author);
+                //_dbContext.Authors.Update(author);
                 return _dbContext.SaveChanges() > 0;
             }
         }

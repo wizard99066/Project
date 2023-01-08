@@ -7,6 +7,7 @@ import {
 import {
 	homeLoadables
 }from "./loadables"
+import Authors from "./containers/Authors/index"
 import NotFound from "./components/NotFound"
 import {
 	useSelector, useDispatch
@@ -28,8 +29,23 @@ const Routes = () => {
 		<Switch>
 			<Route
 				exact
+				component={ homeLoadables.LoadableAuthors }
+				path="/authors"
+			></Route>
+			<Route
+				exact
 				component={ homeLoadables.LoadableHome }
 				path="/"
+			/>
+			<Route
+				exact
+				component={ homeLoadables.LoadableLogin }
+				path="/login"
+			/>
+			<Route
+				exact
+				component={ homeLoadables.LoadablePasswordRecovery }
+				path="/passwordRecovery"
 			/>
 			<Route
 				exact

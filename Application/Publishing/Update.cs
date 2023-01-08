@@ -1,4 +1,5 @@
 ﻿using Domain.Context;
+using Domain.Models.Books;
 using FluentValidation;
 using MediatR;
 using System;
@@ -8,16 +9,15 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Genres
+namespace Application.Publishing
 {
-    public class Edit
+    public class Update
     {
         public class Request : IRequest<bool>
         {
-            public string Name { get; set; }
             public long Id { get; set; }
-
-
+            public string Name { get; set; }
+            public string? City { get; set; }
         }
         public class RequestValidator : AbstractValidator<Request>
         {
@@ -27,6 +27,7 @@ namespace Application.Genres
                 RuleFor(r => r.Id).NotEmpty();
             }
         }
+
         public class Handler : IRequestHandler<Request, bool>
         {
             private readonly AppDbContext _dbContext;
@@ -38,15 +39,17 @@ namespace Application.Genres
             public async Task<bool> Handle(Request request, CancellationToken cancellationToken)
             {
                 
-                var genre = _dbContext.Genres.Where(b => b.Id == request.Id).FirstOrDefault();
-                if (genre == null) throw new Exception("Жанр не найден");
-                genre.Id = request.Id;
-                genre.Name = request.Name;
-                _dbContext.Genres.Update(genre);
+                var publishing = _dbContext.Publishings.Where(b => b.Id== request.Id).FirstOrDefault();
+                if (publishing == null) throw new Exception("Издательство не найдено");
+               // publishing.Id = request.Id;
+                publishing.Name = request.Name;
+                publishing.City = request.City;
+                   
+               // _dbContext.Publishings.Update(publishing);
                 return _dbContext.SaveChanges() > 0;
             }
 
-            
+         
         }
     }
 }
