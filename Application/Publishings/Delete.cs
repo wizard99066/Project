@@ -10,7 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using static Application.Account.Login;
 
-namespace Application.Publishing
+namespace Application.Publishings
 {
     public class Delete
     {

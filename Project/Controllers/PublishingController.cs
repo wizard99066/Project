@@ -1,8 +1,9 @@
-﻿using Application.Publishing;
+﻿using Application.Publishings;
 using Domain.Models.Books;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Application;
+using Application.Publishings.Dto;
 
 namespace Project.Controllers
 {

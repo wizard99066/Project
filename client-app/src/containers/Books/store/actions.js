@@ -1,25 +1,25 @@
 import {
-	authorConstants
+	bookConstants
 }from './constants'
 import api from './api'
 import {
 	defAction
 }from '../../../helpers/defaultAction'
 
-export const authorActions = {
+export const bookActions = {
 	create,
 	getPaged,
 	update,
 	remove,
 	restore,
-	getAllPaged,
+	getById,
 	clear
 
 }
 
 function create(params){
 	const dispatchObj = {
-		constants : authorConstants.Create,
+		constants : bookConstants.Create,
 		service   : {
 			func   : api.create,
 			params : params
@@ -30,7 +30,7 @@ function create(params){
 
 function getPaged(params){
 	const dispatchObj = {
-		constants : authorConstants.GetPaged,
+		constants : bookConstants.GetPaged,
 		service   : {
 			func   : api.getPaged,
 			params : params
@@ -40,7 +40,7 @@ function getPaged(params){
 }
 function update(params){
 	const dispatchObj = {
-		constants : authorConstants.Update,
+		constants : bookConstants.Update,
 		service   : {
 			func   : api.update,
 			params : params
@@ -50,7 +50,7 @@ function update(params){
 }
 function remove(params){
 	const dispatchObj = {
-		constants : authorConstants.Delete,
+		constants : bookConstants.Delete,
 		service   : {
 			func   : api.delete,
 			params : params
@@ -60,7 +60,7 @@ function remove(params){
 }
 function restore(params){
 	const dispatchObj = {
-		constants : authorConstants.Restore,
+		constants : bookConstants.Restore,
 		service   : {
 			func   : api.restore,
 			params : params
@@ -68,12 +68,11 @@ function restore(params){
 	}
 	return defAction(dispatchObj)
 }
-
-function getAllPaged(params){
+function getById(params){
 	const dispatchObj = {
-		constants : authorConstants.GetAllPaged,
+		constants : bookConstants.GetById,
 		service   : {
-			func   : api.getAllPaged,
+			func   : api.getById,
 			params : params
 		}
 	}
@@ -81,7 +80,7 @@ function getAllPaged(params){
 }
 function clear(params){
 	const dispatchObj = {
-		constants : authorConstants.Clear,
+		constants : bookConstants.Clear,
 		service   : {
 			func   : api.clear,
 			params : params

@@ -1,9 +1,10 @@
 ﻿using Application;
 using Application.Genres;
+using Application.Genres.Dto;
 using Domain.Models.Books;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using static Application.Genres.GenreDto;
+using static Application.Genres.Dto.GenreDto;
 
 namespace Project.Controllers
 {
@@ -39,10 +40,6 @@ namespace Project.Controllers
             return await Mediator.Send(request);
         }
 
-        [HttpGet("GetAll")]
-        public async Task<PageItems<Genre>> GetAll([FromHeader] GetAll.Request request)
-        {
-            return await Mediator.Send(request);
-        }
+      
     }
 }

@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Genres
+namespace Application.Publishings.Dto
 {
-    public class GenreDto
+    public class PublishingDto
     {
-        public string NameGenre { get; set; }
+        public string NamePublishing { get; set; }
     }
 }

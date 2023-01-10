@@ -1,25 +1,24 @@
 import {
-	authorConstants
+	genreConstants
 }from './constants'
 import api from './api'
 import {
 	defAction
 }from '../../../helpers/defaultAction'
 
-export const authorActions = {
+export const genreActions = {
 	create,
 	getPaged,
 	update,
 	remove,
 	restore,
-	getAllPaged,
 	clear
 
 }
 
 function create(params){
 	const dispatchObj = {
-		constants : authorConstants.Create,
+		constants : genreConstants.Create,
 		service   : {
 			func   : api.create,
 			params : params
@@ -30,7 +29,7 @@ function create(params){
 
 function getPaged(params){
 	const dispatchObj = {
-		constants : authorConstants.GetPaged,
+		constants : genreConstants.GetPaged,
 		service   : {
 			func   : api.getPaged,
 			params : params
@@ -40,7 +39,7 @@ function getPaged(params){
 }
 function update(params){
 	const dispatchObj = {
-		constants : authorConstants.Update,
+		constants : genreConstants.Update,
 		service   : {
 			func   : api.update,
 			params : params
@@ -50,7 +49,7 @@ function update(params){
 }
 function remove(params){
 	const dispatchObj = {
-		constants : authorConstants.Delete,
+		constants : genreConstants.Delete,
 		service   : {
 			func   : api.delete,
 			params : params
@@ -60,7 +59,7 @@ function remove(params){
 }
 function restore(params){
 	const dispatchObj = {
-		constants : authorConstants.Restore,
+		constants : genreConstants.Restore,
 		service   : {
 			func   : api.restore,
 			params : params
@@ -68,20 +67,9 @@ function restore(params){
 	}
 	return defAction(dispatchObj)
 }
-
-function getAllPaged(params){
-	const dispatchObj = {
-		constants : authorConstants.GetAllPaged,
-		service   : {
-			func   : api.getAllPaged,
-			params : params
-		}
-	}
-	return defAction(dispatchObj)
-}
 function clear(params){
 	const dispatchObj = {
-		constants : authorConstants.Clear,
+		constants : genreConstants.Clear,
 		service   : {
 			func   : api.clear,
 			params : params
@@ -89,3 +77,4 @@ function clear(params){
 	}
 	return defAction(dispatchObj)
 }
+

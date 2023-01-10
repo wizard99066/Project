@@ -1,5 +1,5 @@
 import {
-	authorConstants
+	genreConstants
 }from './constants'
 
 const initialState =
@@ -11,49 +11,49 @@ const initialState =
 
 export default function (state = initialState, action){
 	switch (action.type){
-		case authorConstants.Create.REQUEST:
-		case authorConstants.Restore.REQUEST:
-		case authorConstants.Delete.REQUEST:
-		case authorConstants.GetPaged.REQUEST:
+		case genreConstants.Create.REQUEST:
+		case genreConstants.Restore.REQUEST:
+		case genreConstants.Delete.REQUEST:
+		case genreConstants.GetPaged.REQUEST:
 			return {
 				...state,
 				isSending : true,
 				changed   : null
 			}
-		case authorConstants.Create.FAILURE:
-		case authorConstants.Restore.FAILURE:
-		case authorConstants.Delete.FAILURE:
-		case authorConstants.GetPaged.FAILURE:
+		case genreConstants.Create.FAILURE:
+		case genreConstants.Restore.FAILURE:
+		case genreConstants.Delete.FAILURE:
+		case genreConstants.GetPaged.FAILURE:
 
 			return {
 				...state,
 				isSending : false,
 				error     : action.payload
 			}
-		case authorConstants.Create.SUCCESS:
+		case genreConstants.Create.SUCCESS:
 
 			return {
 				...state,
 				isSending : false,
-				changed   : "Автор успешно добавлен!"
+				changed   : "Жанр успешно добавлен!"
 			}
 
-		case authorConstants.Delete.SUCCESS:
+		case genreConstants.Delete.SUCCESS:
 
 			return {
 				...state,
 				isSending : false,
-				changed   : "Автор успешно удален!"
+				changed   : "Жанр успешно удален!"
 			}
 
-		case authorConstants.Restore.SUCCESS:
+		case genreConstants.Restore.SUCCESS:
 
 			return {
 				...state,
 				isSending : false,
-				changed   : "Автор успешно восстановлен!"
+				changed   : "Жанр успешно восстановлен!"
 			}
-		case authorConstants.GetPaged.SUCCESS:
+		case genreConstants.GetPaged.SUCCESS:
 
 			return {
 				...state,
@@ -61,7 +61,7 @@ export default function (state = initialState, action){
 				paged     : action.payload.result
 			}
 
-		case authorConstants.Clear:
+		case genreConstants.Clear:
 			return {
 				...state,
 				changed   : null,

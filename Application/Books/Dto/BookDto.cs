@@ -5,13 +5,14 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Books
+namespace Application.Books.Dto
 {
     public class BookDto
     {
         public string NameBook { get; set; }
         public string LastNameAuthor { get; set; }
-        public string Genre { get; set; }  
-        public string Discription { get; set; }
+        public string Genre { get; set; }
+        public string Description { get; set; }
+
     }
 }

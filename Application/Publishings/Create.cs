@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Publishing
+namespace Application.Publishings
 {
     public class Create
     {
@@ -47,7 +47,7 @@ namespace Application.Publishing
                     throw new RestException(System.Net.HttpStatusCode.BadRequest, "Данное издательство уже присутствует.");
                 }
 
-                var publishing = new Publishings
+                var publishing = new Publishing
                 {
                     Name = request.Name,
                     City = request.City,

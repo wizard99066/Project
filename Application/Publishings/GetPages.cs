@@ -1,4 +1,5 @@
-﻿using Application.Publishing;
+﻿using Application.Publishings;
+using Application.Publishings.Dto;
 using Domain.Context;
 using FluentValidation;
 using MediatR;
@@ -9,7 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Publishing
+namespace Application.Publishings
 {
     public class GetPages
     {
@@ -41,13 +42,13 @@ namespace Application.Publishing
             {
                 request.Name = request.Name?.Trim().ToLower();
                 var query = _dbContext.Genres
-     .Where(a => !a.IsDeleted)
-     .Where(a => string.IsNullOrEmpty(request.Name) || a.Name.ToLower().Contains(request.Name))
-     //.OrderBy(a => a.Name)
-     .Select(a => new PublishingDto()
-     {
-         NamePublishing = a.Name
-     });
+                                             .Where(a => !a.IsDeleted &&
+                                              string.IsNullOrEmpty(request.Name) || a.Name.ToLower().Contains(request.Name))
+                                             .OrderBy(a => a.Name)
+                                             .Select(a => new PublishingDto()
+                                             {
+                                                 NamePublishing = a.Name
+                                             });
                 var result = await ToPageAsync(query, request.Page, request.PageSize);
                 return result;
             }

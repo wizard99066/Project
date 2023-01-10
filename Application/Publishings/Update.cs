@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Publishing
+namespace Application.Publishings
 {
     public class Update
     {

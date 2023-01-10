@@ -1,4 +1,5 @@
 ﻿using Application.Authors.Dto;
+using Application.Books.Dto;
 using Domain.Context;
 using FluentValidation;
 using MediatR;
@@ -51,7 +52,7 @@ namespace Application.Books
                         NameBook = r.Name,
                         LastNameAuthor = string.Join(", ", r.AuthorBooks.Select(a => a.Author.LastName)),
                         Genre = string.Join(", ", r.GenreBooks.Select(g => g.Genre.Name)),
-                        Discription = r.Description
+                        Description = r.Description
                     });
 
                 var result = await ToPageAsync(query, request.Page, request.PageSize);

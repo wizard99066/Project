@@ -1,4 +1,5 @@
-﻿using Domain.Context;
+﻿using Application.Genres.Dto;
+using Domain.Context;
 using FluentValidation;
 using MediatR;
 using System;
@@ -39,14 +40,13 @@ namespace Application.Genres
             public async Task<PageItems<GenreDto>> Handle(Request request, CancellationToken cancellationToken)
             {
                 request.Name = request.Name?.Trim().ToLower();
-                var query = _dbContext.Genres
-     .Where(a => !a.IsDeleted)
-     .Where(a => string.IsNullOrEmpty(request.Name) || a.Name.ToLower().Contains(request.Name))
-          //.OrderBy(a => a.Name)
-     .Select(a => new GenreDto()
-     {
-         NameGenre = a.Name
-              });
+                var query = _dbContext.Genres.Where(a => !a.IsDeleted &&
+                                                    (string.IsNullOrEmpty(request.Name) || a.Name.ToLower().Contains(request.Name)))
+                                                  .OrderBy(a => a.Name)
+                                             .Select(a => new GenreDto()
+                                             {
+                                                 NameGenre = a.Name
+                                             });
                 var result = await ToPageAsync(query, request.Page, request.PageSize);
                 return result;
             }

@@ -3,10 +3,11 @@ using System.Threading.Tasks;
 using Application.Books;
 using Domain.Models.Books;
 using Application;
+using Application.Books.Dto;
 
 namespace Project.Controllers
 {
-    public class BooksController : BaseController
+    public class BookController : BaseController
     {
         [HttpPost("Create")]
         public async Task<bool> Create([FromBody] Create.Request request)
@@ -32,12 +33,15 @@ namespace Project.Controllers
             return await Mediator.Send(request);
         }
 
-        [HttpGet("GetPages")]
-        public async Task<PageItems<BookDto>> GetPaged([FromHeader] GetPages.Request request)
+        [HttpPost("GetPages")]
+        public async Task<PageItems<BookDto>> GetPaged([FromBody] GetPages.Request request)
         {
             return await Mediator.Send(request);
         }
-
-        
+        [HttpGet("GetById")]
+        public async Task<BookDto> GetById([FromHeader] GetById.Request request)
+        {
+            return await Mediator.Send(request);
+        }
     }
 }

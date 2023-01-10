@@ -43,16 +43,17 @@ namespace Application.Authors
                 request.LastName = request.LastName?.Trim().ToLower();
                 request.Birthday = request.Birthday?.Date;
                 var query = _dbContext.Authors
-                    .Where(a => !a.IsDeleted)
                     .Where(a => string.IsNullOrEmpty(request.FirstName) || a.FirstName.ToLower().Contains(request.FirstName))
                     .Where(a => string.IsNullOrEmpty(request.LastName) || a.LastName.ToLower().Contains(request.LastName))
                     .Where(a => request.Birthday == null || a.Birthday < request.Birthday)
                     .OrderBy(a => a.LastName).ThenBy(a => a.FirstName).ThenBy(a => a.Birthday)
                     .Select(a => new AuthorDto
                     {
+                        Id = a.Id,
                         FirstName = a.FirstName,
                         LastName = a.LastName,
                         Birthday = a.Birthday.HasValue ? a.Birthday.Value.ToString("dd.MM.yyyy") : null,
+                        isDeleted = a.IsDeleted
                     }) ;
                 var result = await ToPageAsync(query, request.Page, request.PageSize);
                 return result;
