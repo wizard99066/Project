@@ -47,7 +47,8 @@ namespace Application.Publishings
                                              .OrderBy(a => a.Name)
                                              .Select(a => new PublishingDto()
                                              {
-                                                 NamePublishing = a.Name
+                                                 Name = a.Name,
+                                                 isDeleted = a.IsDeleted
                                              });
                 var result = await ToPageAsync(query, request.Page, request.PageSize);
                 return result;

@@ -41,7 +41,7 @@ namespace Application.Publishings
                 request.Name = request.Name.Trim().ToLower();
                 request.City = request.City?.Trim();
                 var cityLower = request.City?.ToLower();
-                var anyPublishing = _dbContext.Publishings.Any(r => r.Name == request.Name && r.City == cityLower);
+                var anyPublishing = _dbContext.Publishings.Any(r => r.Name == request.Name && r.Address == cityLower);
                 if (anyPublishing)
                 {
                     throw new RestException(System.Net.HttpStatusCode.BadRequest, "Данное издательство уже присутствует.");
@@ -50,7 +50,7 @@ namespace Application.Publishings
                 var publishing = new Publishing
                 {
                     Name = request.Name,
-                    City = request.City,
+                    Address = request.City,
                 };
 
                 _dbContext.AddAsync(publishing);

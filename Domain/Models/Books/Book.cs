@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Models.Files;
 
 namespace Domain.Models.Books
 {
@@ -15,6 +16,9 @@ namespace Domain.Models.Books
         public List<PublishingBook> Publishings { get; set; }
         public List<GenreBook> GenreBooks { get; set; }
         public bool IsDeleted { get; set; }
+        public Files.File Avatar { get; set; }
+        public long? AvatarId { get; set; }
+
 
     }
 }

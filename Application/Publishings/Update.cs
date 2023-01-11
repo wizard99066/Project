@@ -43,7 +43,7 @@ namespace Application.Publishings
                 if (publishing == null) throw new Exception("Издательство не найдено");
                // publishing.Id = request.Id;
                 publishing.Name = request.Name;
-                publishing.City = request.City;
+                publishing.Address = request.City;
                    
                // _dbContext.Publishings.Update(publishing);
                 return _dbContext.SaveChanges() > 0;

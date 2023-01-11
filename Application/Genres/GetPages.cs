@@ -45,7 +45,8 @@ namespace Application.Genres
                                                   .OrderBy(a => a.Name)
                                              .Select(a => new GenreDto()
                                              {
-                                                 NameGenre = a.Name
+                                                 NameGenre = a.Name,
+                                                 Id = a.Id
                                              });
                 var result = await ToPageAsync(query, request.Page, request.PageSize);
                 return result;

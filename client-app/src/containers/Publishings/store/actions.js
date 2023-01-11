@@ -8,7 +8,7 @@ import {
 
 export const publishingActions = {
 	create,
-	getPaged,
+	getPages,
 	update,
 	remove,
 	restore,
@@ -28,11 +28,11 @@ function create(params){
 	return defAction(dispatchObj)
 }
 
-function getPaged(params){
+function getPages(params){
 	const dispatchObj = {
-		constants : publishingConstants.GetPaged,
+		constants : publishingConstants.GetPages,
 		service   : {
-			func   : api.getPaged,
+			func   : api.getPages,
 			params : params
 		}
 	}

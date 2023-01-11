@@ -1,0 +1,17 @@
+.myBtn{
+    width: 200px;
+}
+
+.filter{
+    margin: 0 auto;
+}
+
+.addBtn{
+    margin-bottom: 10px;
+}
+
+.modal .myBtn{
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+}

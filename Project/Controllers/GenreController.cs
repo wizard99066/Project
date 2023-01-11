@@ -34,7 +34,7 @@ namespace Project.Controllers
             return await Mediator.Send(request);
         }
 
-        [HttpGet("GetPaged")]
+        [HttpGet("GetPages")]
         public async Task<PageItems<GenreDto>> GetPaged([FromHeader] GetPages.Request request)
         {
             return await Mediator.Send(request);

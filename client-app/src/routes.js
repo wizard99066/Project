@@ -49,6 +49,26 @@ const Routes = () => {
 			/>
 			<Route
 				exact
+				component={ homeLoadables.LoadableBooks }
+				path="/books"
+			></Route>
+			<Route
+				exact
+				component={ homeLoadables.LoadableGenres }
+				path="/genres"
+			></Route>
+			<Route
+				exact
+				component={ homeLoadables.LoadablePublishings }
+				path="/publishings"
+			></Route>
+			<Route
+				exact
+				component={ homeLoadables.LoadableBook }
+				path="/book/:id"
+			></Route>
+			<Route
+				exact
 				component={ NotFound }
 				path="*"
 			/>

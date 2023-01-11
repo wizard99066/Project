@@ -14,7 +14,7 @@ export default function (state = initialState, action){
 		case genreConstants.Create.REQUEST:
 		case genreConstants.Restore.REQUEST:
 		case genreConstants.Delete.REQUEST:
-		case genreConstants.GetPaged.REQUEST:
+		case genreConstants.GetPages.REQUEST:
 			return {
 				...state,
 				isSending : true,
@@ -23,7 +23,7 @@ export default function (state = initialState, action){
 		case genreConstants.Create.FAILURE:
 		case genreConstants.Restore.FAILURE:
 		case genreConstants.Delete.FAILURE:
-		case genreConstants.GetPaged.FAILURE:
+		case genreConstants.GetPages.FAILURE:
 
 			return {
 				...state,
@@ -53,7 +53,7 @@ export default function (state = initialState, action){
 				isSending : false,
 				changed   : "Жанр успешно восстановлен!"
 			}
-		case genreConstants.GetPaged.SUCCESS:
+		case genreConstants.GetPages.SUCCESS:
 
 			return {
 				...state,

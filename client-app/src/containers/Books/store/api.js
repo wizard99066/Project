@@ -4,7 +4,7 @@ import {
 
 export default {
 	create   : (params) => requests.post('/Book/Create', params),
-	getPaged : (params) => requests.getWithParams('/Book/GetPaged', params),
+	getPages : (params) => requests.getWithParams('/Book/GetPages', params),
 	update   : (params) => requests.post('/Book/Update', params),
 	delete   : (params) => requests.getWithParams('/Book/Delete', params),
 	restore  : (params) => requests.getWithParams('/Book/Restore', params),

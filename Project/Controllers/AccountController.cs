@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 
 namespace Project.Controllers
 {
+    [Route("api/[controller]")]
     public class AccountController : BaseController
     {
         [HttpPost("login")]
@@ -11,8 +12,13 @@ namespace Project.Controllers
         {
             return await Mediator.Send(request);
         }
-        [HttpPost("test")]
-        public async Task<string> Test([FromBody] Login.Request request)
+        [HttpPost("CreateRole")]
+        public async Task<bool> CreateRole([FromBody] CreateRole.Request request)
+        {
+            return await Mediator.Send(request);
+        }
+        [HttpPost("CreateUser")]
+        public async Task<bool> CreateUser([FromBody] CreateUser.Request request)
         {
             return await Mediator.Send(request);
         }

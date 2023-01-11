@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Domain.Models.Files;
 
 namespace Domain.Context
 {
@@ -24,8 +25,10 @@ namespace Domain.Context
         public DbSet<Publishing> Publishings { get; set; }
         public DbSet<GenreBook> GenreBooks { get; set; }
         public DbSet<PublishingBook> PublishingBooks { get; set; }
-       // public DbSet<File> Files { get; set; }
-
+        public DbSet<Models.Files.File> Files { get; set; }
+        public DbSet <UserBookFavorites>UserBookFavorites { get; set; }
+        public DbSet<UserBookRead> UserBookReads { get; set; }
+        public DbSet<UserBookWantToRead> UserBookWantToReads { get; set; }
         private readonly ILoggerFactory _loggerFactory;
         public AppDbContext(DbContextOptions options, ILoggerFactory loggerFactory) : base(options)
         {

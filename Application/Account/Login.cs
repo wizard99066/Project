@@ -1,7 +1,9 @@
 ﻿using Domain.Context;
 using Domain.Models.Books;
+using Domain.Models.Users;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +29,8 @@ namespace Application.Account
         public class Handler : IRequestHandler<Request, string>
         {
             private readonly AppDbContext _dbContext;
+            private readonly RoleManager<Role> _roleManager;
+
             public Handler(AppDbContext dbContext)
             {
                 _dbContext = dbContext;
@@ -44,6 +48,13 @@ namespace Application.Account
                 //_dbContext.Books.RemoveRange(books);
                 //_dbContext.Books.Update(books);
                 //_dbContext.SaveChanges();
+
+                var role = new Role
+                {
+                    Name = "admin"
+                };
+
+                await _roleManager.CreateAsync(role);
 
                 return "1234";
             }

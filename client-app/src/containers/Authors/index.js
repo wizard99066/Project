@@ -192,7 +192,9 @@ const Authors = () => {
 			<Table
 				columns={ columns }
 				dataSource={ paged.items }
+				pagination={ false }
 			>
+
 			</Table>
 			{ paged.count > 10
 				? (

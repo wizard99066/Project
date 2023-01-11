@@ -20,10 +20,30 @@ const LoadablePasswordRecovery = Loadable({
 	loader  : () => import('../containers/PasswordRecovery'),
 	loading : () => <Loading />
 })
+const LoadableBooks = Loadable({
+	loader  : () => import('../containers/Books'),
+	loading : () => <Loading />
+})
+const LoadableGenres = Loadable({
+	loader  : () => import('../containers/Genres'),
+	loading : () => <Loading />
+})
+const LoadablePublishings = Loadable({
+	loader  : () => import('../containers/Publishings'),
+	loading : () => <Loading />
+})
+const LoadableBook= Loadable({
+	loader  : () => import('../containers/Books/OneBook'),
+	loading : () => <Loading />
+})
 
 export const homeLoadables = {
 	LoadableHome,
 	LoadableAuthors,
 	LoadableLogin,
-	LoadablePasswordRecovery
+	LoadablePasswordRecovery,
+	LoadableBooks,
+	LoadableGenres,
+	LoadablePublishings,
+	LoadableBook
 }

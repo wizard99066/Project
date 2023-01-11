@@ -16,6 +16,7 @@ export default function (state = initialState, action){
 		case bookConstants.Restore.REQUEST:
 		case bookConstants.Delete.REQUEST:
 		case bookConstants.GetById.REQUEST:
+		case bookConstants.GetPages.REQUEST:
 			return {
 				...state,
 				isSending : true,
@@ -26,6 +27,7 @@ export default function (state = initialState, action){
 		case bookConstants.Restore.FAILURE:
 		case bookConstants.Delete.FAILURE:
 		case bookConstants.GetById.FAILURE:
+		case bookConstants.GetPages.FAILURE:
 
 			return {
 				...state,
@@ -56,7 +58,7 @@ export default function (state = initialState, action){
 				isSending : false,
 				changed   : "Книга успешно восстановлена!"
 			}
-		case bookConstants.GetPaged.SUCCESS:
+		case bookConstants.GetPages.SUCCESS:
 
 			return {
 				...state,

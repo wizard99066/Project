@@ -30,9 +30,9 @@ function create(params){
 
 function getPaged(params){
 	const dispatchObj = {
-		constants : bookConstants.GetPaged,
+		constants : bookConstants.GetPages,
 		service   : {
-			func   : api.getPaged,
+			func   : api.getPages,
 			params : params
 		}
 	}

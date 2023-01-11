@@ -17,7 +17,7 @@ namespace Application.Publishings
 
         public class Request : IRequest<PageItems<Publishing>>
         {
-            public string? NamePublishing { get; set; }
+            public string? Name { get; set; }
             public int Page { get; set; }
             public int PageSize { get; set; }
         }
@@ -41,9 +41,9 @@ namespace Application.Publishings
 
             public async Task<PageItems<Publishing>> Handle(Request request, CancellationToken cancellationToken)
             {
-                request.NamePublishing = request.NamePublishing?.Trim().ToLower();
+                request.Name = request.Name?.Trim().ToLower();
                 var query = _dbContext.Publishings
-                    .Where(a => string.IsNullOrEmpty(request.NamePublishing) || a.Name.ToLower().Contains(request.NamePublishing))
+                    .Where(a => string.IsNullOrEmpty(request.Name) || a.Name.ToLower().Contains(request.Name))
                     .OrderBy(a => a.Name);
                 var result = await ToPageAsync(query, request.Page, request.PageSize);
                 return result;

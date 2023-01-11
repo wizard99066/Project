@@ -8,7 +8,7 @@ import {
 
 export const genreActions = {
 	create,
-	getPaged,
+	getPages,
 	update,
 	remove,
 	restore,
@@ -27,11 +27,11 @@ function create(params){
 	return defAction(dispatchObj)
 }
 
-function getPaged(params){
+function getPages(params){
 	const dispatchObj = {
-		constants : genreConstants.GetPaged,
+		constants : genreConstants.GetPages,
 		service   : {
-			func   : api.getPaged,
+			func   : api.getPages,
 			params : params
 		}
 	}

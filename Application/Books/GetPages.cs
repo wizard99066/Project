@@ -52,7 +52,8 @@ namespace Application.Books
                         NameBook = r.Name,
                         LastNameAuthor = string.Join(", ", r.AuthorBooks.Select(a => a.Author.LastName)),
                         Genre = string.Join(", ", r.GenreBooks.Select(g => g.Genre.Name)),
-                        Description = r.Description
+                        Description = r.Description,
+                        isDeleted = r.IsDeleted
                     });
 
                 var result = await ToPageAsync(query, request.Page, request.PageSize);

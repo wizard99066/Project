@@ -22,7 +22,7 @@ namespace Application.Books
             public List<long> GenreIds { get; set; }
             public string? Description { get; set; }
             public int? Year { get; set; }
-            public List<long> PublishingIds { get; set; }
+            public List<long>? PublishingIds { get; set; }
         }
         public class RequestValidator : AbstractValidator<Request>
         {
@@ -31,7 +31,7 @@ namespace Application.Books
                 RuleFor(r => r.Name).NotEmpty().MinimumLength(2);
                 RuleFor(r => r.AuthorIds).NotEmpty();
                 RuleFor(r => r.GenreIds).NotEmpty();
-                RuleFor(r => r.PublishingIds).NotEmpty();
+              //  RuleFor(r => r.PublishingIds).NotEmpty();
             }
         }
 

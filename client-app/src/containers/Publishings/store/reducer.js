@@ -14,7 +14,7 @@ export default function (state = initialState, action){
 		case publishingConstants.Create.REQUEST:
 		case publishingConstants.Restore.REQUEST:
 		case publishingConstants.Delete.REQUEST:
-		case publishingConstants.GetPaged.REQUEST:
+		case publishingConstants.GetPages.REQUEST:
 			return {
 				...state,
 				isSending : true,
@@ -23,7 +23,7 @@ export default function (state = initialState, action){
 		case publishingConstants.Create.FAILURE:
 		case publishingConstants.Restore.FAILURE:
 		case publishingConstants.Delete.FAILURE:
-		case publishingConstants.GetPaged.FAILURE:
+		case publishingConstants.GetPages.FAILURE:
 
 			return {
 				...state,
@@ -53,7 +53,7 @@ export default function (state = initialState, action){
 				isSending : false,
 				changed   : "Издательство успешно восстановлено!"
 			}
-		case publishingConstants.GetPaged.SUCCESS:
+		case publishingConstants.GetPages.SUCCESS:
 
 			return {
 				...state,

@@ -7,6 +7,7 @@ using Application.Books.Dto;
 
 namespace Project.Controllers
 {
+    [Route("api/[controller]")]
     public class BookController : BaseController
     {
         [HttpPost("Create")]
