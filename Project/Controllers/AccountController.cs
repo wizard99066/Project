@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Project.Controllers
 {
-    [Route("api/[controller]")]
+
     public class AccountController : BaseController
     {
         [HttpPost("login")]

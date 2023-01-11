@@ -33,10 +33,9 @@ const Books = () => {
 	const [form] = Form.useForm()
 
 	const { isSending, changed, paged } = useSelector((state) => state.bookReducer)
-	const { paged:pagedGenre } = useSelector((state) => state.genreReducer)
+	const { paged:pagedGenre, list: listGenre } = useSelector((state) => state.genreReducer)
 	const { paged:pagedBook } = useSelector((state) => state.bookReducer)
 
-	console.log(pagedGenre)
 	useEffect(() => {
 		if (changed){
 			Notifications.successNotice(changed)
@@ -61,11 +60,6 @@ const Books = () => {
 	}, [record])
 
 	useEffect(() => {
-		dispatch(genreActions.getPages({ page     : 1,
-			pageSize : 999 }))
-		return () => {
-			dispatch(bookActions.clear())
-		}
 	}, [])
 
 	const getPages = (values) => {
@@ -80,6 +74,10 @@ const Books = () => {
 	}
 	const restore = params => {
 		dispatch(bookActions.restore(params))
+	}
+
+	const findGenres = params => {
+		dispatch(genreActions.search(params))
 	}
 
 	function onCreate(values){
@@ -268,16 +266,6 @@ const Books = () => {
 						] }
 					>
 						<Select mode="multiple">
-							{ pagedBook?.items?.length > 0 ?
-								pagedBook.items.map((genre) => (<Select.Option
-									key={ book.id }
-									value={ book.id }
-								                                >
-									{ ' ' }
-									{ genre.nameBook }
-									{ ' ' }
-								</Select.Option>))
-								: null }
 						</Select>
 					</Form.Item>
 					<Form.Item
@@ -290,17 +278,21 @@ const Books = () => {
 							}
 						] }
 					>
-						<Select mode="multiple">
-							{ pagedGenre?.items?.length > 0 ?
-								pagedGenre.items.map((genre) => (<Select.Option
-									key={ genre.id }
-									value={ genre.id }
-								                                 >
-									{ ' ' }
-									{ genre.nameGenre }
-									{ ' ' }
-								</Select.Option>))
-								: null }
+						<Select
+							filterOption={ false }
+							mode="multiple"
+							notFoundContent={ null }
+							onSearch={ (value) => findGenres({ name: value }) }
+						>
+							{
+								listGenre?.map((genre) => (
+									<Select.Option
+										key={ genre.id }
+										value={ genre.id }
+									>
+										{ genre.name }
+									</Select.Option>))
+							}
 						</Select>
 
 					</Form.Item>

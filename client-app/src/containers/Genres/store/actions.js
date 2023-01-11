@@ -12,7 +12,8 @@ export const genreActions = {
 	update,
 	remove,
 	restore,
-	clear
+	clear,
+	search
 
 }
 
@@ -72,6 +73,16 @@ function clear(params){
 		constants : genreConstants.Clear,
 		service   : {
 			func   : api.clear,
+			params : params
+		}
+	}
+	return defAction(dispatchObj)
+}
+function search(params){
+	const dispatchObj = {
+		constants : genreConstants.Search,
+		service   : {
+			func   : api.search,
 			params : params
 		}
 	}

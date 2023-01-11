@@ -6,7 +6,8 @@ const initialState =
 {
 	isSending : false,
 	paged     : {},
-	changed   : null
+	changed   : null,
+	list      : []
 }
 
 export default function (state = initialState, action){
@@ -15,6 +16,7 @@ export default function (state = initialState, action){
 		case genreConstants.Restore.REQUEST:
 		case genreConstants.Delete.REQUEST:
 		case genreConstants.GetPages.REQUEST:
+		case genreConstants.Search.REQUEST:
 			return {
 				...state,
 				isSending : true,
@@ -24,6 +26,7 @@ export default function (state = initialState, action){
 		case genreConstants.Restore.FAILURE:
 		case genreConstants.Delete.FAILURE:
 		case genreConstants.GetPages.FAILURE:
+		case genreConstants.Search.FAILURE:
 
 			return {
 				...state,
@@ -59,6 +62,13 @@ export default function (state = initialState, action){
 				...state,
 				isSending : false,
 				paged     : action.payload.result
+			}
+		case genreConstants.Search.SUCCESS:
+
+			return {
+				...state,
+				isSending : false,
+				list      : action.payload.result
 			}
 
 		case genreConstants.Clear:

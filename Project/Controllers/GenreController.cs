@@ -3,6 +3,7 @@ using Application.Genres;
 using Application.Genres.Dto;
 using Domain.Models.Books;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using static Application.Genres.Dto.GenreDto;
 
@@ -39,7 +40,13 @@ namespace Project.Controllers
         {
             return await Mediator.Send(request);
         }
+        [HttpGet("Search")]
+        public async Task<List<IdNameDto>> Search([FromHeader] Search.Request request)
+        {
+            return await Mediator.Send(request);
+        }
 
-      
+
+
     }
 }
