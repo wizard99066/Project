@@ -96,6 +96,7 @@ function search(params){
 		service   : {
 			func   : api.search,
 			params : params
-		}d
+		}
+	}
 	return defAction(dispatchObj)
 }

@@ -50,6 +50,7 @@ namespace Application.Books
                     .Select(r => new BookDto()
                     {
                         NameBook = r.Name,
+                        Id=r.Id,
                         LastNameAuthor = string.Join(", ", r.AuthorBooks.Select(a => a.Author.LastName)),
                         Genre = string.Join(", ", r.GenreBooks.Select(g => g.Genre.Name)),
                         Description = r.Description,

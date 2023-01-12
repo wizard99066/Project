@@ -7,7 +7,7 @@ const initialState =
 	isSending : false,
 	paged     : {},
 	changed   : null,
-	list : []
+	list      : []
 }
 
 export default function (state = initialState, action){
@@ -16,7 +16,7 @@ export default function (state = initialState, action){
 		case authorConstants.Restore.REQUEST:
 		case authorConstants.Delete.REQUEST:
 		case authorConstants.GetPaged.REQUEST:
-			case authorConstants.Search.REQUEST:
+		case authorConstants.Search.REQUEST:
 			return {
 				...state,
 				isSending : true,
@@ -26,7 +26,7 @@ export default function (state = initialState, action){
 		case authorConstants.Restore.FAILURE:
 		case authorConstants.Delete.FAILURE:
 		case authorConstants.GetPaged.FAILURE:
-			case authorConstants.Search.FAILURE:
+		case authorConstants.Search.FAILURE:
 
 			return {
 				...state,
@@ -72,7 +72,7 @@ export default function (state = initialState, action){
 				paged     : {},
 				error     : null
 			}
-			case authorConstants.Search.SUCCESS:
+		case authorConstants.Search.SUCCESS:
 
 			return {
 				...state,

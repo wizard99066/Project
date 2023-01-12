@@ -37,7 +37,7 @@ const Books = () => {
 
 	const { isSending, changed, paged } = useSelector((state) => state.bookReducer)
 	const { paged:pagedGenre, list: listGenre } = useSelector((state) => state.genreReducer)
-	const { paged:pagedAuthor, list: listAuthor } = useSelector((state) => state.authorsReducer)
+	const { list: listAuthor } = useSelector((state) => state.authorReducer)
 
 	const { paged:pagedBook } = useSelector((state) => state.bookReducer)
 
@@ -98,7 +98,19 @@ const Books = () => {
 		setIsModalVisible(false)
 		form.resetFields()
 	}
-
+	function onUpdate(values){
+		console.log(record)
+		dispatch(bookActions.update({
+			    name        : values.nameBook,
+			authorId    : values.lastNameAuthor,
+			genreId     : values.genre,
+			description : values.description,
+			id          : record.id
+		}))
+		setRecord(null)
+		setIsModalVisible(false)
+		form.resetFields()
+	}
 	function onFilter(value, values){
 		setFilter({ ...values })
 	}
@@ -249,7 +261,7 @@ const Books = () => {
 		  		labelCol={ { span: 5 } }
 				  wrapperCol={ { span   : 16,
 						offset : 1 } }
-				  onFinish={ onCreate }
+				  onFinish={ record?onUpdate:onCreate }
 		   >
 					<Form.Item
 						label="Название"
@@ -287,7 +299,7 @@ const Books = () => {
 										key={ author.id }
 										value={ author.id }
 									>
-										{ author.name }
+										{ `${ author.lastName } ${ author.firstName }` }
 									</Select.Option>))
 							}
 

@@ -1,8 +1,11 @@
 ﻿using Application;
 using Application.Authors;
 using Application.Authors.Dto;
+
+
 using Domain.Models.Books;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Project.Controllers
@@ -44,5 +47,11 @@ namespace Project.Controllers
         {
             return await Mediator.Send(request);
         }
+        [HttpGet("Search")]
+        public async Task<List<IdNameDto>> Search([FromHeader] Search.Request request)
+        {
+            return await Mediator.Send(request);
+        }
+
     }
 }
