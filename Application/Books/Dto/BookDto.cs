@@ -15,6 +15,11 @@ namespace Application.Books.Dto
         public string Genre { get; set; }
         public string Description { get; set; }
         public bool isDeleted { get; set; }
+        public string? Publishing { get; set; }
+        public bool IsRead { get; set; } //прочитано
+        public bool IsToFavorite { get; set; }
+        public bool IsWantToRead { get; set; } //хояу прочитать
+        public long? AvatarId { get; set; }
 
     }
 }

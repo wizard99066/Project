@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Application.Books;
 using Domain.Models.Books;
 using Application;
 using Application.Books.Dto;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Project.Controllers
 {
@@ -11,7 +11,7 @@ namespace Project.Controllers
     public class BookController : BaseController
     {
         [HttpPost("Create")]
-        public async Task<bool> Create([FromBody] Create.Request request)
+        public async Task<bool> Create([FromForm] Create.Request request)
         {
             return await Mediator.Send(request);
         }
@@ -41,6 +41,11 @@ namespace Project.Controllers
         }
         [HttpGet("GetById")]
         public async Task<BookDto> GetById([FromHeader] GetById.Request request)
+        {
+            return await Mediator.Send(request);
+        }
+        [HttpGet("GetAvatar")]
+        public async Task<FileResult> GetById([FromHeader] GetAvatar.Request request)
         {
             return await Mediator.Send(request);
         }

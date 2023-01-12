@@ -38,17 +38,26 @@ namespace Application.Books
 
             public async Task<BookDto> Handle(Request request, CancellationToken cancellationToken)
             {
-
+                var userId = Guid.Parse("5bf3415c-b87d-4859-b21f-0e604d8a1730");
                 var book = _dbContext.Books.Where(r => r.Id == request.BookId)
                      .Select(r => new BookDto
                      {
                          NameBook = r.Name,
                          Description = r.Description,
-                         LastNameAuthor = string.Join(", ", r.AuthorBooks.Select(a => $"{a.Author.FirstName} {a.Author.LastName}"))
-                     })
+                         LastNameAuthor = string.Join(", ", r.AuthorBooks.Select(a => $"{a.Author.FirstName} {a.Author.LastName}")),
+                         Genre = string.Join(", ", r.GenreBooks.Select(a => a.Genre.Name)),
+                         Publishing = string.Join(", ", r.Publishings.Select(a=>a.Publishing.Name)),
+                         IsRead = r.UsersBookReads.Any(UserBookReads => UserBookReads.UserId == userId),
+                         IsWantToRead = r.UsersBookWantToReads.Any(r => r.UserId == userId),
+                         IsToFavorite= r.UsersBookFavorites.Any(r => r.UserId == userId),
+                         AvatarId = r.AvatarId
+
+
+            })
                      .FirstOrDefault();//первая запись или null вернется
                 return book;
             }
+
         }
     }
 }

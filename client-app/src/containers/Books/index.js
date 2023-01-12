@@ -27,13 +27,28 @@ import {
 	authorActions
 }from '../Authors/store/actions'
 import FormItem from 'antd/es/form/FormItem'
-
+import {
+	PlusOutlined
+}from '@ant-design/icons'
+const getBase64 = (file) => new Promise((resolve, reject) => {
+	const reader = new FileReader()
+	reader.readAsDataURL(file)
+	reader.onload = () => resolve(reader.result)
+	reader.onerror = (error) => reject(error)
+})
 const Books = () => {
 	const dispatch = useDispatch()
 	const [isModalVisible, setIsModalVisible] = useState(false)
 	const [filter, setFilter] = useState({})
 	const [page, setPage] = useState(1)
 	const [record, setRecord] = useState(null)
+	const [previewOpen, setPreviewOpen] = useState(false)
+	const [previewImage, setPreviewImage] = useState('')
+	const [previewTitle, setPreviewTitle] = useState('')
+	const [avatar, setAvatar] = useState([
+		{ name : "123",
+			url  : "https://localhost:44313/api/Book/GetAvatar?Id=1" }
+	])
 	const [form] = Form.useForm()
 
 	const { isSending, changed, paged } = useSelector((state) => state.bookReducer)
@@ -90,12 +105,14 @@ const Books = () => {
 	}
 
 	function onCreate(values){
-		dispatch(bookActions.create({
-			    name        : values.nameBook,
-			authorIds   : values.lastNameAuthor,
-			genreIds    : values.genre,
-			description : values.description
-		}))
+		debugger
+		const formData = new FormData()
+		formData.append("name", values.nameBook)
+		formData.append("authorIds", values.lastNameAuthor)
+		formData.append("genreIds", values.genre)
+		formData.append("description", values.description)
+		formData.append("file", avatar[0]?.originFileObj)
+		dispatch(bookActions.create(formData))
 		setIsModalVisible(false)
 		form.resetFields()
 	}
@@ -190,6 +207,21 @@ const Books = () => {
 			)
 		}
 	  ]
+
+	function beforeUpload(file){
+		const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
+		if (!isJpgOrPng)
+			Notifications.errorNotice(`Неверный формат`, `Для загрузки доступны файлы форматов: ".jpg", "jpeg", ".png"`)
+		return isJpgOrPng? false : Upload.LIST_IGNORE
+	}
+
+	const handlePreview = async (file) => {
+		if (!file.url && !file.preview)
+		  file.preview = await getBase64(file.originFileObj)
+		setPreviewImage(file.url || file.preview)
+		setPreviewOpen(true)
+		setPreviewTitle(file.name)
+	  }
 
 	return (
 		<div>
@@ -381,11 +413,26 @@ const Books = () => {
 					<Form.Item
 						label="Картинка"
 						name="file"
-
 					>
-						<Upload>
-							{ ' ' }
-Загрузить файл
+						<Upload
+							beforeUpload={ beforeUpload }
+							customRequest={ null }
+							fileList={ avatar }
+							listType="picture-card"
+							maxCount={ 1 }
+							onChange={ ({ fileList: newFileList }) => setAvatar(newFileList) }
+							onPreview={ handlePreview }
+						>
+							<div>
+								<PlusOutlined />
+								<div
+									style={ {
+										marginTop: 8
+									} }
+								>
+        							Загрузить файл
+								</div>
+							</div>
 						</Upload>
 					</Form.Item>
 					<Button
@@ -397,6 +444,20 @@ const Books = () => {
 						{ record ? "Обновить книгу" : "Добавить книгу" }
 					</Button>
 				</Form>
+			</Modal>
+			<Modal
+				footer={ null }
+				open={ previewOpen }
+				title={ previewTitle }
+				onCancel={ () => setPreviewOpen(false) }
+			>
+				<img
+					alt="example"
+					src={ previewImage }
+					style={ {
+						width: '100%'
+					} }
+				/>
 			</Modal>
 		</div>
 	)

@@ -4,12 +4,15 @@ using Domain.Models.Books;
 using Domain.Models.Files;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using File = Domain.Models.Files.File;
 
 namespace Application.Books
 {
@@ -24,7 +27,7 @@ namespace Application.Books
             public string? Description { get; set; }
             public int? Year { get; set; }
             public List<long>? PublishingIds { get; set; }
-            public File File { get; set; }
+            public IFormFile? File { get; set; }
         }
         public class RequestValidator : AbstractValidator<Request>
         {
@@ -65,12 +68,28 @@ namespace Application.Books
                 if (request.Year <= 0)
                     throw new RestException(System.Net.HttpStatusCode.BadRequest, "Год не может быть отрицательным.");
 
+                File? avatar = null;
+                if (request.File != null) {
+                    MemoryStream ms = new MemoryStream();
+                    request.File.CopyTo(ms);
+                    avatar =
+                        new Domain.Models.Files.File
+                        {
+                            FileExtension = Path.GetExtension(request.File.FileName),
+                            FileLength = request.File.Length,
+                            FileName = request.File.FileName,
+                            ContentType = request.File.ContentType,
+                            Content = ms.ToArray(),
+                            UploadDate = DateTime.Now
+                        };
+                }
+
                 var book = new Book
                 {
                     Year = request.Year,
                     Name = request.Name,
                     Description = request.Description,
-                    Avatar = request.File
+                    Avatar = avatar
                 };
                 _dbContext.Books.Add(book);
                 var bookAuthors = request.AuthorIds.Select(authorId => new AuthorBook { AuthorId = authorId, Book = book });

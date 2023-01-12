@@ -3,12 +3,17 @@ using Domain.Errors;
 using Domain.Models.Books;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using File = Domain.Models.Files.File;
+
 
 namespace Application.Books
 {
@@ -23,6 +28,8 @@ namespace Application.Books
             public string? Description { get; set; }
             public int? Year { get; set; }
             public List<long>? Publishings { get; set; }
+            public IFormFile? File { get; set; }
+            public bool IsEditAvatar { get; set; }
         }
         public class RequestValidator : AbstractValidator<Request>
         {
@@ -72,9 +79,35 @@ namespace Application.Books
                 _dbContext.AuthorBooks.RemoveRange(authorsToRemove);
                 _dbContext.AuthorBooks.AddRange(authorsToAdd);
 
-                  
-               // var listPublishings = _dbContext.Publishings.ToList();
-                
+                File? avatar = null;
+                if (request.File != null)
+                {
+                    MemoryStream ms = new MemoryStream();
+                    request.File.CopyTo(ms);
+                    avatar =
+                        new File
+                        {
+                            FileExtension = Path.GetExtension(request.File.FileName),
+                            FileLength = request.File.Length,
+                            FileName = request.File.FileName,
+                            ContentType = request.File.ContentType,
+                            Content = ms.ToArray(),
+                            UploadDate = DateTime.Now
+                        };
+                }
+                if (request.IsEditAvatar)
+                {
+                    if (book.AvatarId.HasValue)
+                    {
+                        _dbContext.Files.Remove(new File { Id = book.AvatarId.Value });
+                    }
+                    book.AvatarId = null;
+                    book.Avatar = avatar;
+                }
+
+
+                // var listPublishings = _dbContext.Publishings.ToList();
+
                 book.Year = request.Year.HasValue ? request.Year.Value : 0;
                 book.Name = request.Name;
                 book.Description = request.Description;
