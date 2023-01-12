@@ -1,6 +1,7 @@
 ﻿using Domain.Context;
 using Domain.Errors;
 using Domain.Models.Books;
+using Domain.Models.Files;
 using FluentValidation;
 using MediatR;
 using System;
@@ -23,6 +24,7 @@ namespace Application.Books
             public string? Description { get; set; }
             public int? Year { get; set; }
             public List<long>? PublishingIds { get; set; }
+            public File File { get; set; }
         }
         public class RequestValidator : AbstractValidator<Request>
         {
@@ -31,7 +33,7 @@ namespace Application.Books
                 RuleFor(r => r.Name).NotEmpty().MinimumLength(2);
                 RuleFor(r => r.AuthorIds).NotEmpty();
                 RuleFor(r => r.GenreIds).NotEmpty();
-              //  RuleFor(r => r.PublishingIds).NotEmpty();
+                //  RuleFor(r => r.PublishingIds).NotEmpty();
             }
         }
 
@@ -48,7 +50,7 @@ namespace Application.Books
                 request.Name = request.Name.Trim();
                 request.Description = request.Description?.Trim();
                 request.AuthorIds = request.AuthorIds.Distinct().ToList();
-                request.PublishingIds = request.PublishingIds.Distinct().ToList();
+                //request.PublishingIds = request.PublishingIds.Distinct().ToList();
                 request.GenreIds = request.GenreIds.Distinct().ToList();
 
                 var genres = _dbContext.Genres.Where(genre => request.GenreIds.Contains(genre.Id)).ToList();
@@ -67,15 +69,16 @@ namespace Application.Books
                 {
                     Year = request.Year,
                     Name = request.Name,
-                    Description = request.Description
+                    Description = request.Description,
+                    Avatar = request.File
                 };
                 _dbContext.Books.Add(book);
                 var bookAuthors = request.AuthorIds.Select(authorId => new AuthorBook { AuthorId = authorId, Book = book });
-                var bookGenres = request.GenreIds.Select(genreId => new GenreBook { GenreId= genreId, Book = book });
-                var bookPublishings = request.PublishingIds.Select(publishingId => new PublishingBook { PublishingId= publishingId, Book = book });
+                var bookGenres = request.GenreIds.Select(genreId => new GenreBook { GenreId = genreId, Book = book });
+                //var bookPublishings = request.PublishingIds.Select(publishingId => new PublishingBook { PublishingId= publishingId, Book = book });
                 _dbContext.AuthorBooks.AddRange(bookAuthors);
                 _dbContext.GenreBooks.AddRange(bookGenres);
-                _dbContext.PublishingBooks.AddRange(bookPublishings);
+                //_dbContext.PublishingBooks.AddRange(bookPublishings);
                 return _dbContext.SaveChanges() > 0;
             }
 

@@ -17,8 +17,8 @@ namespace Application.Books
         public class Request : IRequest<PageItems<BookDto>>
         {
             public string? Name { get; set; }
-            public long? GenreId { get; set; }
-            public long? AuthorId { get; set; }
+            public List<long>? GenreId { get; set; }
+            public List<long>? AuthorId { get; set; }
             public int Page { get; set; }
             public int PageSize { get; set; }
         }
@@ -44,9 +44,9 @@ namespace Application.Books
             {
                 request.Name = request.Name?.Trim().ToLower();
 
-                var query = _dbContext.Books.Where(r => (string.IsNullOrEmpty(request.Name) || r.Name == request.Name) &&
-                                                       (request.GenreId == null || r.GenreBooks.Any(r => r.GenreId == request.GenreId)) &&
-                                                       (request.AuthorId == null || r.AuthorBooks.Any(r => r.AuthorId == request.AuthorId)))
+                var query = _dbContext.Books.Where(r => (string.IsNullOrEmpty(request.Name) || r.Name.Trim().ToLower().Contains(request.Name)) &&
+                                                       (request.GenreId == null || request.GenreId.Count == 0 || r.GenreBooks.Any(r => request.GenreId.Contains(r.GenreId))) &&
+                                                       (request.AuthorId == null || request.AuthorId.Count == 0 || r.AuthorBooks.Any(r => request.AuthorId.Contains(r.AuthorId))))
                     .Select(r => new BookDto()
                     {
                         NameBook = r.Name,

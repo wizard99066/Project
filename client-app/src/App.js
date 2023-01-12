@@ -19,6 +19,7 @@ import "./index.css"
 import "./App.css"
 import byBY from 'antd/lib/locale/by_BY'
 import ruRU from 'antd/lib/locale/ru_RU'
+import 'antd/lib/upload/style'
 import moment from "moment"
 import Routes from "./routes"
 import Bowser from "bowser"

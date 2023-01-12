@@ -81,11 +81,13 @@ const Genres = () => {
 	}
 
 	function onPaginationChange(value){
+		console.log(filter)
 		setPage(value)
 		getPages({
-			nameGenre : record?.nameGenre,
+			name      : filter.name,
 			page      : value,
-			pageSize  : 10
+			pageSize  : 10,
+			isDeleted : true
 		})
 	}
 
@@ -93,7 +95,7 @@ const Genres = () => {
 		{
 		  title     : 'Название жанра',
 		  dataIndex : 'nameGenre',
-		  key       : 'name'
+		  key       : 'nameGenre'
 		},
 		{
 			dataIndex : "id",
@@ -120,6 +122,7 @@ const Genres = () => {
 						} }
 						onConfirm={ (e) => {
 							e.stopPropagation()
+							console.log(record)
 							!record.isDeleted ? remove({ id }) : restore({ id })
 						} }
 					>
@@ -133,7 +136,7 @@ const Genres = () => {
 		}
 	  ]
 
-	return (
+	  return (
 		<div>
 
 			<div
@@ -147,7 +150,7 @@ const Genres = () => {
 				>
 					<Form.Item
 						label="Название жанра"
-						nameGenre="nameGenre"
+						name="name"
 					>
 						<Input />
 					</Form.Item>

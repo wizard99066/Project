@@ -1,11 +1,10 @@
 ﻿using Application;
 using Application.Genres;
 using Application.Genres.Dto;
-using Domain.Models.Books;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using static Application.Genres.Dto.GenreDto;
+
 
 namespace Project.Controllers
 {

@@ -40,7 +40,7 @@ namespace Application.Genres
                 
                 var genre = _dbContext.Genres.Where(b => b.Id == request.Id).FirstOrDefault();
 
-                if (genre == null) throw new Exception("Жанр не найдена");
+                if (genre == null) throw new Exception("Жанр не найден");
                 genre.IsDeleted = true;
                 return _dbContext.SaveChanges() > 0;
             }

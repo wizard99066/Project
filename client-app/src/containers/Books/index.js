@@ -1,5 +1,5 @@
 import {
-	Button, Card, DatePicker, Form, Input, Modal, Pagination, Popconfirm, Select, Table
+	Button, Card, DatePicker, Form, Input, Modal, Pagination, Popconfirm, Select, Table, Upload
 }from 'antd'
 import React, {
 	useEffect, useState
@@ -26,6 +26,7 @@ import {
 import {
 	authorActions
 }from '../Authors/store/actions'
+import FormItem from 'antd/es/form/FormItem'
 
 const Books = () => {
 	const dispatch = useDispatch()
@@ -212,13 +213,44 @@ const Books = () => {
 						label="Автор"
 						name="lastNameAuthor"
 					>
-						<Input />
+						<Select
+							filterOption={ false }
+							mode="multiple"
+							notFoundContent={ null }
+							onSearch={ (value) => findAuthors({ name: value }) }
+						>
+							{
+								listAuthor?.map((author) => (
+									<Select.Option
+										key={ author.id }
+										value={ author.id }
+									>
+										{ `${ author.lastName } ${ author.firstName }` }
+									</Select.Option>))
+							}
+
+						</Select>
 					</Form.Item>
 					<Form.Item
 						label="Жанр"
 						name="genre"
 					>
-                        	<Input />
+                        	<Select
+							filterOption={ false }
+							mode="multiple"
+							notFoundContent={ null }
+							onSearch={ (value) => findGenres({ name: value }) }
+                        	>
+							{
+								listGenre?.map((genre) => (
+									<Select.Option
+										key={ genre.id }
+										value={ genre.id }
+									>
+										{ genre.name }
+									</Select.Option>))
+							}
+						</Select>
 					</Form.Item>
 				</Form>
 			</div>
@@ -232,6 +264,7 @@ const Books = () => {
 			<Table
 				columns={ columns }
 				dataSource={ paged.items }
+				pagination={ false }
 			>
 			</Table>
 			{ paged.count > 10
@@ -344,6 +377,16 @@ const Books = () => {
 						] }
 					>
 						<Input />
+					</Form.Item>
+					<Form.Item
+						label="Картинка"
+						name="file"
+
+					>
+						<Upload>
+							{ ' ' }
+Загрузить файл
+						</Upload>
 					</Form.Item>
 					<Button
 						className="myBtn"

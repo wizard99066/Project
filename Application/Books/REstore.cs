@@ -40,7 +40,7 @@ namespace Application.Books
 
                 if (book == null) throw new Exception("Книга не найдена");
 
-                book.IsDeleted = true;
+                book.IsDeleted = false;
 
                 return _dbContext.SaveChanges() > 0;
             }

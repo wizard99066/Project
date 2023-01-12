@@ -18,6 +18,7 @@ namespace Application.Genres
             public string? Name { get; set; }
             public int Page { get; set; }
             public int PageSize { get; set; }
+            public bool IsDeleted  { get; set; }
         }
 
         public class RequestValidator : AbstractValidator<Request>
@@ -40,13 +41,14 @@ namespace Application.Genres
             public async Task<PageItems<GenreDto>> Handle(Request request, CancellationToken cancellationToken)
             {
                 request.Name = request.Name?.Trim().ToLower();
-                var query = _dbContext.Genres.Where(a => !a.IsDeleted &&
+                var query = _dbContext.Genres.Where(a => !a.IsDeleted || request.IsDeleted &&
                                                     (string.IsNullOrEmpty(request.Name) || a.Name.ToLower().Contains(request.Name)))
                                                   .OrderBy(a => a.Name)
                                              .Select(a => new GenreDto()
                                              {
                                                  NameGenre = a.Name,
-                                                 Id = a.Id
+                                                 Id = a.Id,
+                                                 isDeleted= a.IsDeleted,
                                              });
                 var result = await ToPageAsync(query, request.Page, request.PageSize);
                 return result;
