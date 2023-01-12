@@ -69,7 +69,7 @@ const Publishings = () => {
 
 	function onCreate(values){
 		dispatch(publishingActions.create({
-			name: record.name
+			name: values.name
 		}))
 		setIsModalVisible(false)
 		form.resetFields()
@@ -82,7 +82,7 @@ const Publishings = () => {
 	function onPaginationChange(value){
 		setPage(value)
 		getPages({
-			name     : record.name,
+			name     : value.name,
 			page     : value,
 			pageSize : 10
 		})
@@ -205,8 +205,6 @@ const Publishings = () => {
 					>
 						<Input />
 					</Form.Item>
-
-					 <DatePicker />
 
 					<Button
 						className="myBtn"

@@ -82,6 +82,7 @@ export default function (state = initialState, action){
 				error     : null,
 				book      : null
 			}
+			
 
 		default:
 			return state

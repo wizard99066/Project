@@ -8,6 +8,7 @@ export default {
 	update      : (params) => requests.post('/Author/Update', params),
 	delete      : (params) => requests.getWithParams('/Author/Delete', params),
 	restore     : (params) => requests.getWithParams('/Author/Restore', params),
-	getAllPaged : (params) => requests.getWithParams('/Author/GetAllPaged', params)
+	getAllPaged : (params) => requests.getWithParams('/Author/GetAllPaged', params),
+	search   : (params) => requests.getWithParams('/Author/Search', params)
 
 }

@@ -13,7 +13,8 @@ export const authorActions = {
 	remove,
 	restore,
 	getAllPaged,
-	clear
+	clear,
+	search
 
 }
 
@@ -87,5 +88,14 @@ function clear(params){
 			params : params
 		}
 	}
+	return defAction(dispatchObj)
+}
+function search(params){
+	const dispatchObj = {
+		constants : authorConstants.Search,
+		service   : {
+			func   : api.search,
+			params : params
+		}d
 	return defAction(dispatchObj)
 }

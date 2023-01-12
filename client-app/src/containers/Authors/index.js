@@ -64,7 +64,10 @@ const Authors = () => {
 		dispatch(authorActions.remove(params))
 	}
 	const update = params => {
-		dispatch(authorActions.update(params))
+		dispatch(authorActions.update({ firstName : params.firstName,
+			lastName  : params.lastName,
+			birthday  : params.birthday,
+		    id        : record.id }))
 	}
 	const restore = params => {
 		dispatch(authorActions.restore(params))
@@ -76,8 +79,6 @@ const Authors = () => {
 			lastName  : values.lastName,
 			birthday  : values.birthday
 		}))
-		setIsModalVisible(false)
-		form.resetFields()
 	}
 
 	function onFilter(value, values){
@@ -214,6 +215,7 @@ const Authors = () => {
 				footer={ null }
 				open={ isModalVisible }
 				onCancel={ () => {
+					setRecord(null)
 					form.resetFields()
 					setIsModalVisible(false)
 				} }
@@ -223,7 +225,7 @@ const Authors = () => {
 		  		labelCol={ { span: 5 } }
 				  wrapperCol={ { span   : 16,
 						offset : 1 } }
-				  onFinish={ onCreate }
+				  onFinish={ (values) => (record ? update(values) : onCreate(values)) }
 		   >
 					<Form.Item
 						label="Имя"

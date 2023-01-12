@@ -23,6 +23,9 @@ import {
 import {
 	multiply
 }from 'lodash'
+import {
+	authorActions
+}from '../Authors/store/actions'
 
 const Books = () => {
 	const dispatch = useDispatch()
@@ -34,6 +37,8 @@ const Books = () => {
 
 	const { isSending, changed, paged } = useSelector((state) => state.bookReducer)
 	const { paged:pagedGenre, list: listGenre } = useSelector((state) => state.genreReducer)
+	const { paged:pagedAuthor, list: listAuthor } = useSelector((state) => state.authorsReducer)
+
 	const { paged:pagedBook } = useSelector((state) => state.bookReducer)
 
 	useEffect(() => {
@@ -59,8 +64,8 @@ const Books = () => {
 		}
 	}, [record])
 
-	useEffect(() => {
-	}, [])
+	//useEffect(() => {
+	//}, [])
 
 	const getPages = (values) => {
 		dispatch(bookActions.getPaged(values))
@@ -78,6 +83,9 @@ const Books = () => {
 
 	const findGenres = params => {
 		dispatch(genreActions.search(params))
+	}
+	const findAuthors = params => {
+		dispatch(authorActions.search(params))
 	}
 
 	function onCreate(values){
@@ -255,6 +263,7 @@ const Books = () => {
 					>
 						<Input />
 					</Form.Item>
+
 					<Form.Item
 						label="Автор"
 						name="lastNameAuthor"
@@ -264,8 +273,24 @@ const Books = () => {
 								message  : 'Пожалуйста введите автора!'
 							}
 						] }
+
 					>
-						<Select mode="multiple">
+						<Select
+							filterOption={ false }
+							mode="multiple"
+							notFoundContent={ null }
+							onSearch={ (value) => findAuthors({ name: value }) }
+						>
+							{
+								listAuthor?.map((author) => (
+									<Select.Option
+										key={ author.id }
+										value={ author.id }
+									>
+										{ author.name }
+									</Select.Option>))
+							}
+
 						</Select>
 					</Form.Item>
 					<Form.Item
