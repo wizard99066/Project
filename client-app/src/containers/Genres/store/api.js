@@ -9,6 +9,6 @@ export default {
 	delete   : (params) => requests.getWithParams('/Genre/Delete', params),
 	restore  : (params) => requests.getWithParams('/Genre/Restore', params),
 	getAll   : (params) => requests.getWithParams('/Genre/GetAll', params),
-	search   : (params) => requests.getWithParams('/Genre/Search', params)
+	search   : (params) => requests.post('/Genre/Search', params)
 
 }

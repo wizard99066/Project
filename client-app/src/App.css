@@ -85,7 +85,7 @@ flex: 1 0 auto;
 
 .ant-table-thead > tr > th{
   vertical-align: middle;
-  text-align: center;
+  text-align: center!important;
   background: none!important;
 }
 .ant-table td{

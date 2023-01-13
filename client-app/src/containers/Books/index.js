@@ -1,5 +1,5 @@
 import {
-	Button, Card, DatePicker, Form, Input, Modal, Pagination, Popconfirm, Select, Table, Upload
+	Button, Form, Input, Modal, Pagination, Popconfirm, Select, Table, Upload
 }from 'antd'
 import React, {
 	useEffect, useState
@@ -13,23 +13,20 @@ import {
 import DeleteIcon from '../../components/Icons/delete.svg'
 import RestoreIcon from '../../components/Icons/restore.svg'
 import EditIcon from '../../components/Icons/edit.svg'
-import SearchIcon from '../../components/Icons/search.svg'
 import './style.css'
 import Notifications from '../../helpers/Notifications'
-import moment from 'moment/moment'
 import {
 	genreActions
 }from '../Genres/store/actions'
 import {
-	multiply
-}from 'lodash'
-import {
 	authorActions
 }from '../Authors/store/actions'
-import FormItem from 'antd/es/form/FormItem'
 import {
 	PlusOutlined
 }from '@ant-design/icons'
+import {
+	useDebounce
+}from 'use-lodash-debounce'
 const getBase64 = (file) => new Promise((resolve, reject) => {
 	const reader = new FileReader()
 	reader.readAsDataURL(file)
@@ -40,6 +37,7 @@ const Books = () => {
 	const dispatch = useDispatch()
 	const [isModalVisible, setIsModalVisible] = useState(false)
 	const [filter, setFilter] = useState({})
+	const searchFilter = useDebounce(filter, 500)
 	const [page, setPage] = useState(1)
 	const [record, setRecord] = useState(null)
 	const [previewOpen, setPreviewOpen] = useState(false)
@@ -49,36 +47,45 @@ const Books = () => {
 	const [form] = Form.useForm()
 
 	const { isSending, changed, paged } = useSelector((state) => state.bookReducer)
-	const { paged:pagedGenre, list: listGenre } = useSelector((state) => state.genreReducer)
+	const { list: listGenre } = useSelector((state) => state.genreReducer)
 	const { list: listAuthor } = useSelector((state) => state.authorReducer)
-
-	const { paged:pagedBook } = useSelector((state) => state.bookReducer)
 
 	useEffect(() => {
 		if (changed){
 			Notifications.successNotice(changed)
-			onPaginationChange(1)
+			onPaginationChange(page)
+			setRecord(null)
+			setIsModalVisible(false)
+			setAvatar([])
+			form.resetFields()
 		}
 	}, [changed])
 
 	useEffect(() => {
 		onPaginationChange(1)
-	}, [filter])
+	}, [searchFilter])
 
 	useEffect(() => {
 		form.resetFields()
 		if (record){
+			findGenres({ ids: record.genresId })
+			findAuthors({ ids: record.authorsId })
 			form.setFieldsValue({
 				nameBook       : record.nameBook,
-				lastNameAuthor : record.lastNameAuthor,
-				genre          : record.genre,
+				lastNameAuthor : record.authorsId,
+				genre          : record.genresId,
 				description    : record.description
 			})
+			if (record.avatarId){
+				setAvatar([
+					{
+						name : "обложка.jpg",
+						url  : `https://localhost:44313/api/Book/GetAvatar?Id=${ record.avatarId }`
+					}
+				])
+			}
 		}
 	}, [record])
-
-	//useEffect(() => {
-	//}, [])
 
 	const getPages = (values) => {
 		dispatch(bookActions.getPaged(values))
@@ -89,6 +96,9 @@ const Books = () => {
 	}
 	const update = params => {
 		dispatch(bookActions.update(params))
+	}
+	const create = params => {
+		dispatch(bookActions.create(params))
 	}
 	const restore = params => {
 		dispatch(bookActions.restore(params))
@@ -102,8 +112,6 @@ const Books = () => {
 	}
 
 	function onCreateAndUpdate(values){
-		console.log(listAuthor)
-
 		const formData = new FormData()
 		formData.append("name", values.nameBook)
 		values.lastNameAuthor.forEach(author => {
@@ -114,69 +122,60 @@ const Books = () => {
 		})
 		formData.append("description", values.description)
 		formData.append("file", avatar[0]?.originFileObj)
-		dispatch(bookActions.create(formData))
-		setIsModalVisible(false)
-		form.resetFields()
+		formData.append("isEditAvatar", Boolean(!avatar[0]?.url))
+		formData.append("id", record?.id)
+		if (record)
+			update(formData)
+		else
+			create(formData)
 	}
-	function onUpdate(values){
-		console.log(record)
 
-		dispatch(bookActions.update({
-			    name        : values.nameBook,
-			authorId    : values.lastNameAuthor,
-			genreId     : values.genre,
-			description : values.description,
-			id          : record.id
-		}))
-		setRecord(null)
-		setIsModalVisible(false)
-		form.resetFields()
-	}
 	function onFilter(value, values){
-		setFilter({ ...values })
+		setFilter(values)
 	}
 
 	function onPaginationChange(value){
 		setPage(value)
 		getPages({
-			name     : filter.nameBook,
-			authorId : filter.lastNameAuthor,
-			genreId  : filter.genre,
+			name     : searchFilter.nameBook,
+			authorId : searchFilter.lastNameAuthor,
+			genreId  : searchFilter.genre,
 			page     : value,
 			pageSize : 10
 		})
 	}
 
-	//function handleChangeGenre(value){
-
-	//}
 	const columns = [
 		{
 		  title     : 'Название',
 		  dataIndex : 'nameBook',
-		  key       : 'nameBook'
+		  key       : 'nameBook',
+		  width     : "20%"
 		},
 		{
 		  title     : 'Автор',
 		  dataIndex : 'lastNameAuthor',
-		  key       : 'lastNameAuthor'
+		  key       : 'lastNameAuthor',
+		  width     : "20%"
 		},
 		{
 		  title     : 'Жанр',
 		  dataIndex : 'genre',
-		  key       : 'genre'
+		  key       : 'genre',
+		  width     : "10%"
 
 		},
 		{
 			title     : 'Описание',
 			dataIndex : 'description',
-			key       : 'description'
-
+			key       : 'description',
+			width     : "45%",
+			ellipsis  : true
 		},
 		{
 			dataIndex : "id",
 			key       : 'id',
-			width     : 100,
+			width     : "5%",
 			render    : (id, record) => (
 				<div className="changeIcon">
 					<img
@@ -227,11 +226,8 @@ const Books = () => {
 	  }
 
 	return (
-		<div>
-
-			<div
-				className="filter"
-			>
+		<div className="page">
+			<div className="filter">
 				<Form
 				 labelCol={ { span: 5 } }
 				  wrapperCol={ { span   : 16,
@@ -299,19 +295,21 @@ const Books = () => {
 			<Table
 				columns={ columns }
 				dataSource={ paged.items }
+				loading={ { tip      : "Загрузка...",
+					spinning : isSending } }
 				pagination={ false }
+				scroll={ { x: 1200 } }
 			>
 			</Table>
 			{ paged.count > 10
 				? (
 					<Pagination
 						showQuickJumper
+						current={ page }
+						pageSize={ 10 }
 						size="small"
 						total={ paged.count }
 						onChange={ onPaginationChange }
-
-						//current={ filters.page }
-						//pageSize={ filters.pageSize }
 					/>)
 				: null }
 
@@ -323,15 +321,16 @@ const Books = () => {
 					form.resetFields()
 					setIsModalVisible(false)
 					setRecord(null)
+					setAvatar([])
 				} }
 		   >
-		   <Form
-		   form={ form }
-		  		labelCol={ { span: 5 } }
-				  wrapperCol={ { span   : 16,
+		   		<Form
+		   			form={ form }
+		  			labelCol={ { span: 5 } }
+					wrapperCol={ { span   : 16,
 						offset : 1 } }
-				  onFinish={ onCreateAndUpdate }
-		   >
+					onFinish={ onCreateAndUpdate }
+		   		>
 					<Form.Item
 						label="Название"
 						name="nameBook"

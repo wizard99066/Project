@@ -32,8 +32,8 @@ const LoadablePublishings = Loadable({
 	loader  : () => import('../containers/Publishings'),
 	loading : () => <Loading />
 })
-const LoadableBook= Loadable({
-	loader  : () => import('../containers/Books/OneBook'),
+const LoadableListBooks= Loadable({
+	loader  : () => import('../containers/Books/List'),
 	loading : () => <Loading />
 })
 
@@ -45,5 +45,5 @@ export const homeLoadables = {
 	LoadableBooks,
 	LoadableGenres,
 	LoadablePublishings,
-	LoadableBook
+	LoadableListBooks
 }

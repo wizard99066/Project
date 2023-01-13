@@ -13,8 +13,8 @@ export const bookActions = {
 	remove,
 	restore,
 	getById,
-	clear
-
+	clear,
+	getPagedForUsers
 }
 
 function create(params){
@@ -38,6 +38,18 @@ function getPaged(params){
 	}
 	return defAction(dispatchObj)
 }
+
+function getPagedForUsers(params){
+	const dispatchObj = {
+		constants : bookConstants.GetPages,
+		service   : {
+			func   : api.getPagedForUsers,
+			params : params
+		}
+	}
+	return defAction(dispatchObj)
+}
+
 function update(params){
 	const dispatchObj = {
 		constants : bookConstants.Update,

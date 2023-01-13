@@ -15,6 +15,7 @@ namespace Application.Authors
         public class Request : IRequest<List<IdNameDto>>
         {
             public string? Name { get; set; }
+            public List<long> Ids { get; set; } = new List<long>();
         }
 
 
@@ -30,9 +31,9 @@ namespace Application.Authors
             public async Task<List<IdNameDto>> Handle(Request request, CancellationToken cancellationToken)
             {
                 request.Name = request.Name?.Trim().ToLower();
-                var list = _dbContext.Authors.Where(r => (string.IsNullOrEmpty(request.Name) || r.LastName.ToLower().Contains(request.Name) || r.FirstName.ToLower().Contains(request.Name)) && !r.IsDeleted)
+                var list = _dbContext.Authors.Where(r => (string.IsNullOrEmpty(request.Name) || (r.LastName.ToLower() + " " + r.FirstName.ToLower()).Contains(request.Name)) && (request.Ids.Count == 0 || request.Ids.Contains(r.Id)) && (request.Ids.Count != 0 || !r.IsDeleted))
                     .OrderBy(r => r.LastName)
-                    .Take(10)
+                    .Take(request.Ids.Count == 0 ? 10 : request.Ids.Count)
                     .Select(r => new IdNameDto
                     {
                         LastName = r.LastName,

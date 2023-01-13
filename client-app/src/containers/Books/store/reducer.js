@@ -17,6 +17,8 @@ export default function (state = initialState, action){
 		case bookConstants.Delete.REQUEST:
 		case bookConstants.GetById.REQUEST:
 		case bookConstants.GetPages.REQUEST:
+		case bookConstants.Update.REQUEST:
+
 			return {
 				...state,
 				isSending : true,
@@ -28,6 +30,7 @@ export default function (state = initialState, action){
 		case bookConstants.Delete.FAILURE:
 		case bookConstants.GetById.FAILURE:
 		case bookConstants.GetPages.FAILURE:
+		case bookConstants.Update.FAILURE:
 
 			return {
 				...state,
@@ -41,6 +44,13 @@ export default function (state = initialState, action){
 				...state,
 				isSending : false,
 				changed   : "Книга успешно добавлена!"
+			}
+		case bookConstants.Update.SUCCESS:
+
+			return {
+				...state,
+				isSending : false,
+				changed   : "Книга успешно обновлена!"
 			}
 
 		case bookConstants.Delete.SUCCESS:
@@ -82,7 +92,6 @@ export default function (state = initialState, action){
 				error     : null,
 				book      : null
 			}
-			
 
 		default:
 			return state

@@ -23,8 +23,8 @@ namespace Application.Books
         {
             public long Id { get; set; }
             public string Name { get; set; }
-            public List<long> AuthorId { get; set; }
-            public List<long> GenreId { get; set; }
+            public List<long> AuthorIds { get; set; }
+            public List<long> GenreIds { get; set; }
             public string? Description { get; set; }
             public int? Year { get; set; }
             public List<long>? Publishings { get; set; }
@@ -36,9 +36,9 @@ namespace Application.Books
             public RequestValidator()
             {
                 RuleFor(r => r.Name).MinimumLength(2);
-                RuleFor(r => r.AuthorId).NotEmpty();
+                RuleFor(r => r.AuthorIds).NotEmpty();
                 RuleFor(r => r.Id).NotEmpty();
-                RuleFor(r=> r.GenreId).NotEmpty();
+                RuleFor(r=> r.GenreIds).NotEmpty();
             }
         }
 
@@ -56,8 +56,8 @@ namespace Application.Books
                 if (book == null) throw new Exception("Книга не найдена");
 
                 var genres = _dbContext.GenreBooks.Where(genre => genre.BookId == request.Id).ToList();
-                var genresToRemove = genres.Where(g=> !request.GenreId.Contains(g.GenreId)).ToList();
-                var genresToAdd = request.GenreId.Where(g => !genres.Any(gen => gen.GenreId == g)).Select(g => new GenreBook
+                var genresToRemove = genres.Where(g=> !request.GenreIds.Contains(g.GenreId)).ToList();
+                var genresToAdd = request.GenreIds.Where(g => !genres.Any(gen => gen.GenreId == g)).Select(g => new GenreBook
                 {
                     BookId = request.Id,
                     GenreId = g
@@ -70,8 +70,8 @@ namespace Application.Books
                
 
                 var authors = _dbContext.AuthorBooks.Where(author=> request.Id == author.BookId).ToList();
-                var authorsToRemove = authors.Where(g => !request.GenreId.Contains(g.AuthorId)).ToList();
-                var authorsToAdd = request.AuthorId.Where(a => !authors.Any(ar => ar.AuthorId == a)).Select(a=> new AuthorBook
+                var authorsToRemove = authors.Where(g => !request.AuthorIds.Contains(g.AuthorId)).ToList();
+                var authorsToAdd = request.AuthorIds.Where(a => !authors.Any(ar => ar.AuthorId == a)).Select(a=> new AuthorBook
                 {
                     BookId= request.Id,
                     AuthorId=a

@@ -13,10 +13,14 @@ import {
 import DeleteIcon from '../../components/Icons/delete.svg'
 import RestoreIcon from '../../components/Icons/restore.svg'
 import EditIcon from '../../components/Icons/edit.svg'
-import SearchIcon from '../../components/Icons/search.svg'
+import "dayjs/locale/ru"
+import dayjs from 'dayjs'
 import './style.css'
 import Notifications from '../../helpers/Notifications'
-import moment from 'moment/moment'
+import moment from 'moment'
+import {
+	useDebounce
+}from 'use-lodash-debounce'
 
 const Authors = () => {
 	const dispatch = useDispatch()
@@ -25,6 +29,7 @@ const Authors = () => {
 	const [page, setPage] = useState(1)
 	const [record, setRecord] = useState(null)
 	const [form] = Form.useForm()
+	const searchFilter = useDebounce(filter, 500)
 
 	const { isSending, changed, paged } = useSelector((state) => state.authorReducer)
 
@@ -33,14 +38,14 @@ const Authors = () => {
 			Notifications.successNotice(changed)
 			form.resetFields()
 			setIsModalVisible(false)
-
-			onPaginationChange(1)
+			onPaginationChange(page)
+			setRecord(null)
 		}
 	}, [changed])
 
 	useEffect(() => {
 		onPaginationChange(1)
-	}, [filter])
+	}, [searchFilter])
 
 	useEffect(() => {
 		form.resetFields()
@@ -48,16 +53,10 @@ const Authors = () => {
 			form.setFieldsValue({
 				firstName : record.firstName,
 				lastName  : record.lastName,
-				birthday  : moment(record.birthday)
+				birthday  : dayjs(record.birthday, 'DD.MM.YYYY')//moment(record.birthday)
 			})
 		}
 	}, [record])
-
-	useEffect(() => {
-		return () => {
-			dispatch(authorActions.clear())
-		}
-	}, [])
 
 	function getPaged(values){
 		dispatch(authorActions.getPaged(values))
@@ -66,37 +65,41 @@ const Authors = () => {
 	const remove = params => {
 		dispatch(authorActions.remove(params))
 	}
+
 	const update = params => {
-		dispatch(authorActions.update({ firstName : params.firstName,
-			lastName  : params.lastName,
-			birthday  : params.birthday,
-		    id        : record.id }))
+		dispatch(authorActions.update(params))
 	}
 	const restore = params => {
 		dispatch(authorActions.restore(params))
 	}
 
-	function onCreate(values){
-		dispatch(authorActions.create({
-			firstName : values.firstName,
-			lastName  : values.lastName,
-			birthday  : values.birthday
-		}))
+	const create = params => {
+		dispatch(authorActions.create(params))
 	}
 
 	function onFilter(value, values){
-		setFilter({ ...values })
+		setFilter(values)
 	}
 
 	function onPaginationChange(value){
 		setPage(value)
 		getPaged({
-			firstName : filter.firstName,
-			lastName  : filter.lastName,
-			birthday  : filter.birthday,
+			firstName : searchFilter.firstName,
+			lastName  : searchFilter.lastName,
+			birthday  : searchFilter.birthday,
 			page      : value,
 			pageSize  : 10
 		})
+	}
+	function onCreateAndUpdate(values){
+		if (record){
+			update({
+				...values,
+				id: record.id
+			})
+		}
+		else
+			create(values)
 	}
 
 	const columns = [
@@ -114,7 +117,6 @@ const Authors = () => {
 		  title     : 'Дата рождения',
 		  dataIndex : 'birthday',
 		  key       : 'birthday'
-
 		},
 		{
 			dataIndex : "id",
@@ -155,11 +157,8 @@ const Authors = () => {
 	  ]
 
 	return (
-		<div>
-
-			<div
-				className="filter"
-			>
+		<div className="page">
+			<div className="filter">
 				<Form
 				 labelCol={ { span: 5 } }
 				  wrapperCol={ { span   : 16,
@@ -196,32 +195,22 @@ const Authors = () => {
 			<Table
 				columns={ columns }
 				dataSource={ paged.items }
+				loading={ { tip      : "Загрузка...",
+					spinning : isSending } }
 				pagination={ false }
 			>
-
 			</Table>
 			{ paged.count > 10
 				? (
 					<Pagination
 						showQuickJumper
+						current={ page }
+						pageSize={ 10 }
 						size="small"
 						total={ paged.count }
 						onChange={ onPaginationChange }
-
-						//current={ filters.page }
-						//pageSize={ filters.pageSize }
 					/>)
 				: null }
-				 <Modal
-				className="modal"
-				footer={ null }
-				open={ isModalVisible }
-				onCancel={ () => {
-					form.resetFields()
-					setIsModalVisible(false)
-					setRecord(null)
-				} }
-		   ></Modal>
 
 		   <Modal
 				className="modal"
@@ -230,22 +219,24 @@ const Authors = () => {
 				onCancel={ () => {
 					form.resetFields()
 					setIsModalVisible(false)
+					setRecord(null)
 				} }
 		   >
-		   <Form
-		   form={ form }
-		  		labelCol={ { span: 5 } }
-				  wrapperCol={ { span   : 16,
+		   		<Form
+		   			form={ form }
+		  			labelCol={ { span: 5 } }
+				  	wrapperCol={ { span   : 16,
 						offset : 1 } }
-				  onFinish={ (values) => (record ? update(values) : onCreate(values)) }
-		   >
+				  	onFinish={ (values) => (onCreateAndUpdate(values)) }
+		   		>
 					<Form.Item
 						label="Имя"
 						name="firstName"
 						rules={ [
 							{
-								required : true,
-								message  : 'Пожалуйста введите имя!'
+								required   : true,
+								whitespace : true,
+								message    : 'Пожалуйста введите имя!'
 							}
 						] }
 					>

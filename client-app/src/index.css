@@ -163,12 +163,21 @@ code {
   -ms-flex: none;
 }
 
-.ant-modal .ant-btn-primary {
-  background-color: orange;
-  border-color: orange;
-  border-radius: 5px;
-}
-
 .ant-form-item.ant-form-item-flex-justify-right {
   justify-content: right;
+}
+
+.ant-pagination {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+}
+
+.changeIcon :first-child{
+  padding-right: 10px;
+}
+
+.page {
+  padding-left: 5%;
+  padding-right: 5%;
 }

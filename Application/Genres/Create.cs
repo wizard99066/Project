@@ -39,7 +39,7 @@ namespace Application.Genres
             public async Task<bool> Handle(Request request, CancellationToken cancellationToken)
             {
                 request.Name =request.Name.Trim().ToLower();
-                var anyGenre = _dbContext.Genres.Any(r=>r.Name==request.Name);
+                var anyGenre = _dbContext.Genres.Any(r=>r.Name.ToLower()==request.Name);
                 if (anyGenre)
                 {
                     throw new RestException(System.Net.HttpStatusCode.BadRequest, "Данный жанр уже присутствует.");

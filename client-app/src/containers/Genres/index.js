@@ -1,5 +1,5 @@
 import {
-	Button, Card, DatePicker, Form, Input, Modal, Pagination, Popconfirm, Table
+	Button, Form, Input, Modal, Pagination, Popconfirm, Table
 }from 'antd'
 import React, {
 	useEffect, useState
@@ -13,10 +13,11 @@ import {
 import DeleteIcon from '../../components/Icons/delete.svg'
 import RestoreIcon from '../../components/Icons/restore.svg'
 import EditIcon from '../../components/Icons/edit.svg'
-import SearchIcon from '../../components/Icons/search.svg'
 import './style.css'
 import Notifications from '../../helpers/Notifications'
-import moment from 'moment/moment'
+import {
+	useDebounce
+}from 'use-lodash-debounce'
 
 const Genres = () => {
 	const dispatch = useDispatch()
@@ -25,34 +26,32 @@ const Genres = () => {
 	const [page, setPage] = useState(1)
 	const [record, setRecord] = useState(null)
 	const [form] = Form.useForm()
+	const searchFilter = useDebounce(filter, 500)
 
 	const { isSending, changed, paged } = useSelector((state) => state.genreReducer)
 
 	useEffect(() => {
 		if (changed){
 			Notifications.successNotice(changed)
-			onPaginationChange(1)
+			onPaginationChange(page)
+			setRecord(null)
+			form.resetFields()
+			setIsModalVisible(false)
 		}
 	}, [changed])
 
 	useEffect(() => {
 		onPaginationChange(1)
-	}, [filter])
+	}, [searchFilter])
 
 	useEffect(() => {
 		form.resetFields()
 		if (record){
 			form.setFieldsValue({
 				nameGenre: record.nameGenre
-
 			})
 		}
 	}, [record])
-	useEffect(() => {
-		return () => {
-			dispatch(genreActions.clear())
-		}
-	}, [])
 
 	function getPages(values){
 		dispatch(genreActions.getPages(values))
@@ -67,24 +66,32 @@ const Genres = () => {
 	const restore = params => {
 		dispatch(genreActions.restore(params))
 	}
+	const create = params => {
+		dispatch(genreActions.create(params))
+	}
 
-	function onCreate(values){
-		dispatch(genreActions.create({
-			name: values.nameGenre
-		}))
-		setIsModalVisible(false)
-		form.resetFields()
+	function onCreateAndUpdate(values){
+		if (record){
+			update({
+				name : values.nameGenre,
+				id   : record.id
+			})
+		}
+		else {
+			create({
+				name: values.nameGenre
+			})
+		}
 	}
 
 	function onFilter(value, values){
-		setFilter({ ...values })
+		setFilter(values)
 	}
 
 	function onPaginationChange(value){
-		console.log(filter)
 		setPage(value)
 		getPages({
-			name      : filter.name,
+			name      : searchFilter.name,
 			page      : value,
 			pageSize  : 10,
 			isDeleted : true
@@ -93,7 +100,7 @@ const Genres = () => {
 
 	const columns = [
 		{
-		  title     : 'Название жанра',
+		  title     : '',
 		  dataIndex : 'nameGenre',
 		  key       : 'nameGenre'
 		},
@@ -115,15 +122,14 @@ const Genres = () => {
 						cancelText="Нет"
 						okText="Да"
 						placement="left"
-						title={ !record.isDeleted ? 'Вы уверены, что хотите удалить данный жанр?' : 'Вы уверены, что хотите восстановить данную книгу?' }
+						title={ !record.isDeleted ? 'Вы уверены, что хотите удалить данный жанр?' : 'Вы уверены, что хотите восстановить данный жанр?' }
 						onCancel={ (e) => {
 							e.stopPropagation()
 							return null
 						} }
 						onConfirm={ (e) => {
 							e.stopPropagation()
-							console.log(record)
-							!record.isDeleted ? remove({ id }) : restore({ id })
+							!record.isDeleted ? remove({ id: id }) : restore({ id: id })
 						} }
 					>
 						<img
@@ -137,47 +143,45 @@ const Genres = () => {
 	  ]
 
 	  return (
-		<div>
-
-			<div
-				className="filter"
-			>
+		<div className="page">
+			<div className="filter">
 				<Form
-				 labelCol={ { span: 5 } }
-				  wrapperCol={ { span   : 16,
-						offset : 1 } }
+				  layout="inline"
 				  onValuesChange={ onFilter }
 				>
 					<Form.Item
-						label="Название жанра"
 						name="name"
+						style={ { width: "45%" } }
 					>
-						<Input />
+						<Input placeholder="Введите название жанра" />
+					</Form.Item>
+					<Form.Item>
+						<Button
+							type="primary"
+							onClick={ () => setIsModalVisible(true) }
+						>
+							Добавить жанр
+						</Button>
 					</Form.Item>
 				</Form>
 			</div>
-			<Button
-				className="addBtn"
-				type="primary"
-				onClick={ () => setIsModalVisible(true) }
-			>
-				Добавить жанр
-			</Button>
 			<Table
 				columns={ columns }
 				dataSource={ paged.items }
+				loading={ { tip      : "Загрузка...",
+					spinning : isSending } }
+				pagination={ false }
 			>
 			</Table>
 			{ paged.count > 10
 				? (
 					<Pagination
 						showQuickJumper
+						current={ page }
+						pageSize={ 10 }
 						size="small"
 						total={ paged.count }
-						onChange={ onPaginationChange }
-
-						//current={ filters.page }
-						//pageSize={ filters.pageSize }
+						onChange={ (page) => onPaginationChange(page) }
 					/>)
 				: null }
 
@@ -187,30 +191,30 @@ const Genres = () => {
 				open={ isModalVisible }
 				width="800px"
 				onCancel={ () => {
+					setRecord(null)
 					form.resetFields()
 					setIsModalVisible(false)
 				} }
 		   >
-		   <Form
-		   form={ form }
-		  		labelCol={ { span: 5 } }
-				  wrapperCol={ { span   : 16,
+		   		<Form
+					form={ form }
+					labelCol={ { span: 5 } }
+					wrapperCol={ { span   : 16,
 						offset : 1 } }
-				  onFinish={ onCreate }
-		   >
+					onFinish={ onCreateAndUpdate }
+		   		>
 					<Form.Item
 						label="Название жанра"
 						name="nameGenre"
 						rules={ [
 							{
 								required : true,
-								message  : 'Пожалуйста введите название жанра!'
+								message  : 'Пожалуйста, введите название жанра!'
 							}
 						] }
 					>
-						<Input />
+						<Input placeholder="Введите название жанра" />
 					</Form.Item>
-
 					<Button
 						className="myBtn"
 						htmlType="submit"

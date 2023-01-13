@@ -1,0 +1,13 @@
+.nameBook {
+    font-size: 28px;
+}
+.nameAuthorsAndGenres{
+    font-size: 18px;
+    color: black;
+    font-weight: 500;
+}
+.nameDescription{
+    font-size: 16px;
+    color: black;
+    font-weight: 400;
+}

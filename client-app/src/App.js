@@ -29,10 +29,6 @@ const { Content } = Layout
 const App = () => {
 	const isRu = useSelector(state => state.globalReducer.isRu)
 
-	useEffect(() => {
-		isRu ? moment.locale('ru') : moment.locale('be')
-	}, [isRu])
-
 	return (
 		<Router history={ history }>
 			<ConfigProvider locale={ isRu ? ruRU : byBY }>

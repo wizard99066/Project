@@ -47,8 +47,8 @@ namespace Project.Controllers
         {
             return await Mediator.Send(request);
         }
-        [HttpGet("Search")]
-        public async Task<List<IdNameDto>> Search([FromHeader] Search.Request request)
+        [HttpPost("Search")]
+        public async Task<List<IdNameDto>> Search([FromBody] Search.Request request)
         {
             return await Mediator.Send(request);
         }

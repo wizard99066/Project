@@ -17,6 +17,7 @@ export default function (state = initialState, action){
 		case authorConstants.Delete.REQUEST:
 		case authorConstants.GetPaged.REQUEST:
 		case authorConstants.Search.REQUEST:
+		case authorConstants.Update.REQUEST:
 			return {
 				...state,
 				isSending : true,
@@ -27,6 +28,7 @@ export default function (state = initialState, action){
 		case authorConstants.Delete.FAILURE:
 		case authorConstants.GetPaged.FAILURE:
 		case authorConstants.Search.FAILURE:
+		case authorConstants.Update.FAILURE:
 
 			return {
 				...state,
@@ -40,7 +42,13 @@ export default function (state = initialState, action){
 				isSending : false,
 				changed   : "Автор успешно добавлен!"
 			}
+		case authorConstants.Update.SUCCESS:
 
+			return {
+				...state,
+				isSending : false,
+				changed   : "Автор успешно обновлен!"
+			}
 		case authorConstants.Delete.SUCCESS:
 
 			return {

@@ -50,12 +50,16 @@ namespace Application.Books
                     .Select(r => new BookDto()
                     {
                         NameBook = r.Name,
-                        Id=r.Id,
-                        LastNameAuthor = string.Join(", ", r.AuthorBooks.Select(a => a.Author.LastName)),
+                        Id = r.Id,
+                        LastNameAuthor = string.Join(", ", r.AuthorBooks.Select(a => $"{a.Author.FirstName} {a.Author.LastName}")),
                         Genre = string.Join(", ", r.GenreBooks.Select(g => g.Genre.Name)),
                         Description = r.Description,
-                        isDeleted = r.IsDeleted
-                    });
+                        IsDeleted = r.IsDeleted,
+                        GenresId = r.GenreBooks.Select(r => r.GenreId).ToList(),
+                        AuthorsId = r.AuthorBooks.Select(r => r.AuthorId).ToList(),
+                        AvatarId=r.AvatarId
+                    })
+                    .OrderBy(r => r.IsDeleted).ThenBy(r => r.NameBook);
 
                 var result = await ToPageAsync(query, request.Page, request.PageSize);
                 return result;

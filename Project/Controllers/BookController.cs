@@ -17,7 +17,7 @@ namespace Project.Controllers
         }
 
         [HttpPost("Update")]
-        public async Task<bool> Update([FromBody] Update.Request request)
+        public async Task<bool> Update([FromForm] Update.Request request)
         {
             return await Mediator.Send(request);
         }
@@ -46,6 +46,11 @@ namespace Project.Controllers
         }
         [HttpGet("GetAvatar")]
         public async Task<FileResult> GetById([FromHeader] GetAvatar.Request request)
+        {
+            return await Mediator.Send(request);
+        }
+        [HttpPost("GetPagedForUsers")]
+        public async Task<PageItems<UserBookDto>> GetPagedForUsers([FromBody] GetPagedForUsers.Request request)
         {
             return await Mediator.Send(request);
         }

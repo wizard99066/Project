@@ -39,9 +39,9 @@ namespace Application.Genres
             }
 
             public async Task<PageItems<GenreDto>> Handle(Request request, CancellationToken cancellationToken)
-            {
+           {
                 request.Name = request.Name?.Trim().ToLower();
-                var query = _dbContext.Genres.Where(a => !a.IsDeleted || request.IsDeleted &&
+                var query = _dbContext.Genres.Where(a => (!a.IsDeleted || request.IsDeleted) &&
                                                     (string.IsNullOrEmpty(request.Name) || a.Name.ToLower().Contains(request.Name)))
                                                   .OrderBy(a => a.Name)
                                              .Select(a => new GenreDto()

@@ -54,6 +54,11 @@ const Routes = () => {
 			></Route>
 			<Route
 				exact
+				component={ homeLoadables.LoadableListBooks }
+				path="/listBooks"
+			></Route>
+			<Route
+				exact
 				component={ homeLoadables.LoadableGenres }
 				path="/genres"
 			></Route>
@@ -61,11 +66,6 @@ const Routes = () => {
 				exact
 				component={ homeLoadables.LoadablePublishings }
 				path="/publishings"
-			></Route>
-			<Route
-				exact
-				component={ homeLoadables.LoadableBook }
-				path="/book/:id"
 			></Route>
 			<Route
 				exact
