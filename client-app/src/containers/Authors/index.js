@@ -31,6 +31,9 @@ const Authors = () => {
 	useEffect(() => {
 		if (changed){
 			Notifications.successNotice(changed)
+			form.resetFields()
+			setIsModalVisible(false)
+
 			onPaginationChange(1)
 		}
 	}, [changed])
@@ -110,8 +113,8 @@ const Authors = () => {
 		{
 		  title     : 'Дата рождения',
 		  dataIndex : 'birthday',
-		  key       : 'birthday',
-		  render    : (date) => moment(date).format("DD.MM.YYYY")
+		  key       : 'birthday'
+
 		},
 		{
 			dataIndex : "id",
@@ -209,13 +212,22 @@ const Authors = () => {
 						//pageSize={ filters.pageSize }
 					/>)
 				: null }
+				 <Modal
+				className="modal"
+				footer={ null }
+				open={ isModalVisible }
+				onCancel={ () => {
+					form.resetFields()
+					setIsModalVisible(false)
+					setRecord(null)
+				} }
+		   ></Modal>
 
 		   <Modal
 				className="modal"
 				footer={ null }
 				open={ isModalVisible }
 				onCancel={ () => {
-					setRecord(null)
 					form.resetFields()
 					setIsModalVisible(false)
 				} }

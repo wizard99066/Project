@@ -127,7 +127,7 @@ const Genres = () => {
 						} }
 					>
 						<img
-							src={ !record.isDeleted ? DeleteIcon :RestoreIcon }
+							src={ !record.isDeleted ? DeleteIcon : RestoreIcon }
 							title={ !record.isDeleted ? "Удалить" : "Восстановить" }
 						/>
 					</Popconfirm>

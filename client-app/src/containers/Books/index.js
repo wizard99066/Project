@@ -45,10 +45,7 @@ const Books = () => {
 	const [previewOpen, setPreviewOpen] = useState(false)
 	const [previewImage, setPreviewImage] = useState('')
 	const [previewTitle, setPreviewTitle] = useState('')
-	const [avatar, setAvatar] = useState([
-		{ name : "123",
-			url  : "https://localhost:44313/api/Book/GetAvatar?Id=1" }
-	])
+	const [avatar, setAvatar] = useState([])
 	const [form] = Form.useForm()
 
 	const { isSending, changed, paged } = useSelector((state) => state.bookReducer)
@@ -104,12 +101,17 @@ const Books = () => {
 		dispatch(authorActions.search(params))
 	}
 
-	function onCreate(values){
-		debugger
+	function onCreateAndUpdate(values){
+		console.log(listAuthor)
+
 		const formData = new FormData()
 		formData.append("name", values.nameBook)
-		formData.append("authorIds", values.lastNameAuthor)
-		formData.append("genreIds", values.genre)
+		values.lastNameAuthor.forEach(author => {
+			formData.append("authorIds", author)
+		})
+		values.genre.forEach(genre => {
+			formData.append("genreIds", genre)
+		})
 		formData.append("description", values.description)
 		formData.append("file", avatar[0]?.originFileObj)
 		dispatch(bookActions.create(formData))
@@ -118,6 +120,7 @@ const Books = () => {
 	}
 	function onUpdate(values){
 		console.log(record)
+
 		dispatch(bookActions.update({
 			    name        : values.nameBook,
 			authorId    : values.lastNameAuthor,
@@ -319,6 +322,7 @@ const Books = () => {
 				onCancel={ () => {
 					form.resetFields()
 					setIsModalVisible(false)
+					setRecord(null)
 				} }
 		   >
 		   <Form
@@ -326,7 +330,7 @@ const Books = () => {
 		  		labelCol={ { span: 5 } }
 				  wrapperCol={ { span   : 16,
 						offset : 1 } }
-				  onFinish={ record?onUpdate:onCreate }
+				  onFinish={ onCreateAndUpdate }
 		   >
 					<Form.Item
 						label="Название"
@@ -362,6 +366,7 @@ const Books = () => {
 								listAuthor?.map((author) => (
 									<Select.Option
 										key={ author.id }
+										label={ author.id }
 										value={ author.id }
 									>
 										{ `${ author.lastName } ${ author.firstName }` }
