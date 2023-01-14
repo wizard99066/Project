@@ -1,11 +1,8 @@
 ﻿using Domain.Context;
-using Domain.Models.Books;
 using FluentValidation;
 using MediatR;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -38,18 +35,18 @@ namespace Application.Publishings
 
             public async Task<bool> Handle(Request request, CancellationToken cancellationToken)
             {
-                
-                var publishing = _dbContext.Publishings.Where(b => b.Id== request.Id).FirstOrDefault();
+
+                var publishing = _dbContext.Publishings.Where(b => b.Id == request.Id).FirstOrDefault();
                 if (publishing == null) throw new Exception("Издательство не найдено");
-               // publishing.Id = request.Id;
+                // publishing.Id = request.Id;
                 publishing.Name = request.Name;
                 publishing.Address = request.City;
-                   
-               // _dbContext.Publishings.Update(publishing);
+
+                // _dbContext.Publishings.Update(publishing);
                 return _dbContext.SaveChanges() > 0;
             }
 
-         
+
         }
     }
 }

@@ -1,15 +1,9 @@
 ﻿using Application.Books.Dto;
-using Application.UserBooksFavorite.Dto;
-using Application.UserBooksWantToRead.Dto;
 using Domain.Context;
 using Domain.Helpers.JWT;
-using Domain.Models.Users;
 using FluentValidation;
 using MediatR;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 

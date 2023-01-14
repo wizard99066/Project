@@ -34,9 +34,9 @@ namespace Application.Books
             public async Task<FileResult> Handle(Request request, CancellationToken cancellationToken)
             {
                 var file = _dbContext.Files.Where(f => f.Id == request.Id).FirstOrDefault();
-                if (file == null) 
+                if (file == null)
                     throw new RestException(System.Net.HttpStatusCode.NotFound, "Файла с таким Id не существует");
-                
+
                 System.IO.MemoryStream ms = new System.IO.MemoryStream();
                 ms.Write(file.Content, 0, (int)file.FileLength);
                 ms.Position = 0;

@@ -42,7 +42,7 @@ namespace Application.Authors
                 request.LastName = request.LastName.Trim();
                 var lowerFirstName = request.FirstName?.ToLower();
                 var anyAuthor = _dbContext.Authors
-                    .Any(a => a.FirstName.ToLower() == lowerFirstName && a.LastName.ToLower() == request.LastName.ToLower() && 
+                    .Any(a => a.FirstName.ToLower() == lowerFirstName && a.LastName.ToLower() == request.LastName.ToLower() &&
                     a.Birthday == request.Birthday.Date);
                 if (anyAuthor)
                     throw new RestException(System.Net.HttpStatusCode.BadRequest, "Данный автор уже присутствует.");

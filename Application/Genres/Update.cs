@@ -2,9 +2,7 @@
 using FluentValidation;
 using MediatR;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -37,16 +35,16 @@ namespace Application.Genres
 
             public async Task<bool> Handle(Request request, CancellationToken cancellationToken)
             {
-                
+
                 var genre = _dbContext.Genres.Where(b => b.Id == request.Id).FirstOrDefault();
                 if (genre == null) throw new Exception("Жанр не найден");
                 //genre.Id = request.Id;
                 genre.Name = request.Name;
-               // _dbContext.Genres.Update(genre);
+                // _dbContext.Genres.Update(genre);
                 return _dbContext.SaveChanges() > 0;
             }
 
-            
+
         }
     }
 }

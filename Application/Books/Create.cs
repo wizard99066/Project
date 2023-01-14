@@ -1,7 +1,6 @@
 ﻿using Domain.Context;
 using Domain.Errors;
 using Domain.Models.Books;
-using Domain.Models.Files;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -9,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using File = Domain.Models.Files.File;
@@ -69,7 +67,8 @@ namespace Application.Books
                     throw new RestException(System.Net.HttpStatusCode.BadRequest, "Год не может быть отрицательным.");
 
                 File? avatar = null;
-                if (request.File != null) {
+                if (request.File != null)
+                {
                     MemoryStream ms = new MemoryStream();
                     request.File.CopyTo(ms);
                     avatar =

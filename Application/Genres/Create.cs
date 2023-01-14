@@ -3,10 +3,7 @@ using Domain.Errors;
 using Domain.Models.Books;
 using FluentValidation;
 using MediatR;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -38,8 +35,8 @@ namespace Application.Genres
 
             public async Task<bool> Handle(Request request, CancellationToken cancellationToken)
             {
-                request.Name =request.Name.Trim().ToLower();
-                var anyGenre = _dbContext.Genres.Any(r=>r.Name.ToLower()==request.Name);
+                request.Name = request.Name.Trim().ToLower();
+                var anyGenre = _dbContext.Genres.Any(r => r.Name.ToLower() == request.Name);
                 if (anyGenre)
                 {
                     throw new RestException(System.Net.HttpStatusCode.BadRequest, "Данный жанр уже присутствует.");

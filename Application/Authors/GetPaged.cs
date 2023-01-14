@@ -54,7 +54,7 @@ namespace Application.Authors
                         LastName = a.LastName,
                         Birthday = a.Birthday.HasValue ? a.Birthday.Value.ToString("dd.MM.yyyy") : null,
                         isDeleted = a.IsDeleted
-                    }) ;
+                    });
                 var result = await ToPageAsync(query, request.Page, request.PageSize);
                 return result;
             }

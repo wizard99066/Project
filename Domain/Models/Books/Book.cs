@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Models.Files;
-
-namespace Domain.Models.Books
+﻿namespace Domain.Models.Books
 {
-    public class Book:IId
+    public class Book : IId
     {
         public int? Year { get; set; }
         public string Name { get; set; }
@@ -18,9 +11,9 @@ namespace Domain.Models.Books
         public bool IsDeleted { get; set; }
         public Files.File Avatar { get; set; }
         public long? AvatarId { get; set; }
-        public List<UserBookFavorites>UsersBookFavorites { get; set; }
-        public List<UserBookRead>UsersBookReads { get; set; }
-        public List<UserBookWantToRead> UsersBookWantToReads { get; set;}
+        public List<UserBookFavorites> UsersBookFavorites { get; set; }
+        public List<UserBookRead> UsersBookReads { get; set; }
+        public List<UserBookWantToRead> UsersBookWantToReads { get; set; }
 
     }
 }

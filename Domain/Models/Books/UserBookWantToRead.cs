@@ -1,13 +1,8 @@
 ﻿using Domain.Models.Users;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Models.Books
 {
-    public class UserBookWantToRead :IId
+    public class UserBookWantToRead : IId
     {
         public Book Book { get; set; }
         public long BookId { get; set; }

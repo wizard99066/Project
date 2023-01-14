@@ -1,6 +1,6 @@
 ﻿namespace Domain.Models.Books
 {
-    public class Author:IId
+    public class Author : IId
     {
         public string? FirstName { get; set; }
         public string LastName { get; set; }

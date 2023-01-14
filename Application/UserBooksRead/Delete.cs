@@ -3,10 +3,7 @@ using Domain.Errors;
 using Domain.Helpers.JWT;
 using FluentValidation;
 using MediatR;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -40,7 +37,7 @@ namespace Application.UserBooksRead
 
             public async Task<bool> Handle(Request request, CancellationToken cancellationToken)
             {
-                var userId = _dbContext.Users.Where(u => u.UserName == _userAccessor.GetCurrentUsername()).Select(u => u.Id).FirstOrDefault();  
+                var userId = _dbContext.Users.Where(u => u.UserName == _userAccessor.GetCurrentUsername()).Select(u => u.Id).FirstOrDefault();
                 var book = _dbContext.UserBookReads.Where(b => b.BookId == request.BookId && b.UserId == userId).FirstOrDefault();
 
                 if (book == null)

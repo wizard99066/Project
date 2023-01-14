@@ -60,7 +60,7 @@ namespace Application.Account
                 {
                     UserName = request.UserName,
                     Email = request.Email,
-                    EmailConfirmed = true, 
+                    EmailConfirmed = true,
                 };
                 user.PasswordHash = _passwordHasher.HashPassword(user, request.Password);
 

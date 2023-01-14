@@ -1,13 +1,9 @@
 ﻿using Application.Books.Dto;
 using Domain.Context;
-using Domain.Errors;
-using Domain.Models.Books;
 using FluentValidation;
 using MediatR;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -46,14 +42,14 @@ namespace Application.Books
                          Description = r.Description,
                          LastNameAuthor = string.Join(", ", r.AuthorBooks.Select(a => $"{a.Author.FirstName} {a.Author.LastName}")),
                          Genre = string.Join(", ", r.GenreBooks.Select(a => a.Genre.Name)),
-                         Publishing = string.Join(", ", r.Publishings.Select(a=>a.Publishing.Name)),
+                         Publishing = string.Join(", ", r.Publishings.Select(a => a.Publishing.Name)),
                          IsRead = r.UsersBookReads.Any(UserBookReads => UserBookReads.UserId == userId),
                          IsWantToRead = r.UsersBookWantToReads.Any(r => r.UserId == userId),
-                         IsToFavorite= r.UsersBookFavorites.Any(r => r.UserId == userId),
+                         IsToFavorite = r.UsersBookFavorites.Any(r => r.UserId == userId),
                          AvatarId = r.AvatarId
 
 
-            })
+                     })
                      .FirstOrDefault();//первая запись или null вернется
                 return book;
             }

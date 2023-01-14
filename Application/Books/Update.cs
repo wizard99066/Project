@@ -1,15 +1,12 @@
 ﻿using Domain.Context;
-using Domain.Errors;
 using Domain.Models.Books;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using File = Domain.Models.Files.File;
@@ -38,7 +35,7 @@ namespace Application.Books
                 RuleFor(r => r.Name).MinimumLength(2);
                 RuleFor(r => r.AuthorIds).NotEmpty();
                 RuleFor(r => r.Id).NotEmpty();
-                RuleFor(r=> r.GenreIds).NotEmpty();
+                RuleFor(r => r.GenreIds).NotEmpty();
             }
         }
 
@@ -56,7 +53,7 @@ namespace Application.Books
                 if (book == null) throw new Exception("Книга не найдена");
 
                 var genres = _dbContext.GenreBooks.Where(genre => genre.BookId == request.Id).ToList();
-                var genresToRemove = genres.Where(g=> !request.GenreIds.Contains(g.GenreId)).ToList();
+                var genresToRemove = genres.Where(g => !request.GenreIds.Contains(g.GenreId)).ToList();
                 var genresToAdd = request.GenreIds.Where(g => !genres.Any(gen => gen.GenreId == g)).Select(g => new GenreBook
                 {
                     BookId = request.Id,
@@ -67,14 +64,14 @@ namespace Application.Books
                 _dbContext.GenreBooks.AddRange(genresToAdd);
 
 
-               
 
-                var authors = _dbContext.AuthorBooks.Where(author=> request.Id == author.BookId).ToList();
+
+                var authors = _dbContext.AuthorBooks.Where(author => request.Id == author.BookId).ToList();
                 var authorsToRemove = authors.Where(g => !request.AuthorIds.Contains(g.AuthorId)).ToList();
-                var authorsToAdd = request.AuthorIds.Where(a => !authors.Any(ar => ar.AuthorId == a)).Select(a=> new AuthorBook
+                var authorsToAdd = request.AuthorIds.Where(a => !authors.Any(ar => ar.AuthorId == a)).Select(a => new AuthorBook
                 {
-                    BookId= request.Id,
-                    AuthorId=a
+                    BookId = request.Id,
+                    AuthorId = a
                 }).ToList();
                 _dbContext.AuthorBooks.RemoveRange(authorsToRemove);
                 _dbContext.AuthorBooks.AddRange(authorsToAdd);
@@ -111,12 +108,12 @@ namespace Application.Books
                 book.Year = request.Year.HasValue ? request.Year.Value : 0;
                 book.Name = request.Name;
                 book.Description = request.Description;
-               //book.Publishings = listPublishings;
+                //book.Publishings = listPublishings;
                 _dbContext.Books.Update(book);
                 return _dbContext.SaveChanges() > 0;
             }
 
-         
+
         }
     }
 }

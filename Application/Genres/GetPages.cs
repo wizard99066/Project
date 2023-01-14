@@ -2,10 +2,7 @@
 using Domain.Context;
 using FluentValidation;
 using MediatR;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,7 +15,7 @@ namespace Application.Genres
             public string? Name { get; set; }
             public int Page { get; set; }
             public int PageSize { get; set; }
-            public bool IsDeleted  { get; set; }
+            public bool IsDeleted { get; set; }
         }
 
         public class RequestValidator : AbstractValidator<Request>
@@ -39,7 +36,7 @@ namespace Application.Genres
             }
 
             public async Task<PageItems<GenreDto>> Handle(Request request, CancellationToken cancellationToken)
-           {
+            {
                 request.Name = request.Name?.Trim().ToLower();
                 var query = _dbContext.Genres.Where(a => (!a.IsDeleted || request.IsDeleted) &&
                                                     (string.IsNullOrEmpty(request.Name) || a.Name.ToLower().Contains(request.Name)))
@@ -48,7 +45,7 @@ namespace Application.Genres
                                              {
                                                  NameGenre = a.Name,
                                                  Id = a.Id,
-                                                 isDeleted= a.IsDeleted,
+                                                 isDeleted = a.IsDeleted,
                                              });
                 var result = await ToPageAsync(query, request.Page, request.PageSize);
                 return result;

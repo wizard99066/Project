@@ -1,14 +1,11 @@
 ﻿using Application.Books.Dto;
 using Domain.Context;
 using Domain.Helpers.JWT;
-using Domain.Models.Users;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -53,7 +50,7 @@ namespace Application.Books
                 var query = _dbContext.Books.Where(r => (string.IsNullOrEmpty(request.BookName) || r.Name.Trim().ToLower().Contains(request.BookName)) &&
                                                        (request.Genres.Count == 0 || r.GenreBooks.Any(r => request.Genres.Contains(r.GenreId))) &&
                                                        (request.Authors.Count == 0 || r.AuthorBooks.Any(r => request.Authors.Contains(r.AuthorId))) &&
-                                                       (!r.IsDeleted) 
+                                                       (!r.IsDeleted)
                                                        )
                     .Select(r => new UserBookDto()
                     {

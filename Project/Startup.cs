@@ -1,7 +1,9 @@
 ﻿using Domain.Context;
 using Domain.Helpers.JWT;
 using Domain.Middleware;
+using Domain.Models.Books;
 using Domain.Models.Users;
+using Domain.Services;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -103,6 +105,8 @@ namespace Project
 
             services.Configure<DataProtectionTokenProviderOptions>(options =>
                 options.TokenLifespan = TimeSpan.FromMinutes(short.Parse(Configuration.GetSection("Tokens")["TokenLifespan"])));
+
+            services.AddScoped<ICRUD<Genre>, CRUDService<Genre>>();
 
             #endregion
 

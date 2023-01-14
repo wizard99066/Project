@@ -1,10 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using Application;
 using Application.Books;
-using Domain.Models.Books;
-using Application;
 using Application.Books.Dto;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Project.Controllers
 {

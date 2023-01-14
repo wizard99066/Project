@@ -1,15 +1,15 @@
-﻿using Application.Publishings;
+﻿using Application;
+using Application.Publishings;
+using Application.Publishings.Dto;
 using Domain.Models.Books;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Application;
-using Application.Publishings.Dto;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Project.Controllers
 {
     [Authorize(Roles = "admin")]
-    public class PublishingController:BaseController
+    public class PublishingController : BaseController
     {
         [HttpPost("Create")]
         public async Task<bool> Create([FromBody] Create.Request request)

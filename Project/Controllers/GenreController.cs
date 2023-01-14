@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Project.Controllers
 {
-    public class GenreController:BaseController
+    public class GenreController : BaseController
     {
         [HttpPost("Create")]
         [Authorize(Roles = "admin")]

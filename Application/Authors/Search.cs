@@ -1,10 +1,8 @@
 ﻿using Application.Authors.Dto;
 using Domain.Context;
 using MediatR;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -37,7 +35,7 @@ namespace Application.Authors
                     .Select(r => new IdNameDto
                     {
                         LastName = r.LastName,
-                        FirstName= r.FirstName,
+                        FirstName = r.FirstName,
                         Id = r.Id
                     }).ToList();
 

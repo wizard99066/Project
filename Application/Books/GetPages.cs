@@ -1,12 +1,9 @@
-﻿using Application.Authors.Dto;
-using Application.Books.Dto;
+﻿using Application.Books.Dto;
 using Domain.Context;
 using FluentValidation;
 using MediatR;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -57,7 +54,7 @@ namespace Application.Books
                         IsDeleted = r.IsDeleted,
                         GenresId = r.GenreBooks.Select(r => r.GenreId).ToList(),
                         AuthorsId = r.AuthorBooks.Select(r => r.AuthorId).ToList(),
-                        AvatarId=r.AvatarId
+                        AvatarId = r.AvatarId
                     })
                     .OrderBy(r => r.IsDeleted).ThenBy(r => r.NameBook);
 
