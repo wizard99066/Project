@@ -19,10 +19,9 @@ import "./index.css"
 import "./App.css"
 import byBY from 'antd/lib/locale/by_BY'
 import ruRU from 'antd/lib/locale/ru_RU'
-import 'antd/lib/upload/style'
-import moment from "moment"
 import Routes from "./routes"
 import Bowser from "bowser"
+import Navigation from "./containers/Menu/index"
 import ErrorBoundary from "./components/ErrorBoundary"
 const { Content } = Layout
 
@@ -39,10 +38,12 @@ const App = () => {
 						minHeight : "100vh"
 					} }
 				>
+					<Navigation />
 					<Layout
 						className="main-middle-layout"
 						style={ {
-						  backgroundColor: '#FFFFFF'
+						  backgroundColor : '#FFFFFF',
+						  paddingTop      : "20px"
 						} }
 					>
 						<Content

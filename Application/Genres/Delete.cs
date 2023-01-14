@@ -1,14 +1,10 @@
 ﻿using Domain.Context;
-using Domain.Models.Books;
 using FluentValidation;
 using MediatR;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using static Application.Account.Login;
 
 namespace Application.Genres
 {
@@ -37,7 +33,7 @@ namespace Application.Genres
 
             public async Task<bool> Handle(Request request, CancellationToken cancellationToken)
             {
-                
+
                 var genre = _dbContext.Genres.Where(b => b.Id == request.Id).FirstOrDefault();
 
                 if (genre == null) throw new Exception("Жанр не найден");

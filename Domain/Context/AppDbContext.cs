@@ -18,6 +18,7 @@ namespace Domain.Context
         IdentityRoleClaim<Guid>,
         IdentityUserToken<Guid>>
     {
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<Book> Books { get; set; }
         public DbSet<Author> Authors { get; set; }
         public DbSet<AuthorBook> AuthorBooks { get; set; }
@@ -29,6 +30,7 @@ namespace Domain.Context
         public DbSet <UserBookFavorites>UserBookFavorites { get; set; }
         public DbSet<UserBookRead> UserBookReads { get; set; }
         public DbSet<UserBookWantToRead> UserBookWantToReads { get; set; }
+
         private readonly ILoggerFactory _loggerFactory;
         public AppDbContext(DbContextOptions options, ILoggerFactory loggerFactory) : base(options)
         {

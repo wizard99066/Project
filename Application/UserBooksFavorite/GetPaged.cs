@@ -1,6 +1,9 @@
-﻿using Application.UserBooksFavorite.Dto;
+﻿using Application.Books.Dto;
+using Application.UserBooksFavorite.Dto;
 using Application.UserBooksWantToRead.Dto;
 using Domain.Context;
+using Domain.Helpers.JWT;
+using Domain.Models.Users;
 using FluentValidation;
 using MediatR;
 using System;
@@ -14,9 +17,8 @@ namespace Application.UserBooksFavorite
 {
     public class GetPaged
     {
-        public class Request : IRequest<PageItems<UserBookFavoriteDto>>
+        public class Request : IRequest<PageItems<UserBookDto>>
         {
-
             public int Page { get; set; }
             public int PageSize { get; set; }
         }
@@ -30,27 +32,33 @@ namespace Application.UserBooksFavorite
             }
         }
 
-        public class Handler : BaseService<UserBookFavoriteDto>, IRequestHandler<Request, PageItems<UserBookFavoriteDto>>
+        public class Handler : BaseService<UserBookDto>, IRequestHandler<Request, PageItems<UserBookDto>>
         {
             private readonly AppDbContext _dbContext;
-            public Handler(AppDbContext dbContext)
+            private readonly UserAccessor _userAccessor;
+
+            public Handler(AppDbContext dbContext, UserAccessor userAccessor)
             {
                 _dbContext = dbContext;
+                _userAccessor = userAccessor;
             }
 
-            public async Task<PageItems<UserBookFavoriteDto>> Handle(Request request, CancellationToken cancellationToken)
+            public async Task<PageItems<UserBookDto>> Handle(Request request, CancellationToken cancellationToken)
             {
-
-                var userId = Guid.Parse("5bf3415c-b87d-4859-b21f-0e604d8a1730");
                 var query = _dbContext.UserBookFavorites
-                    .Where(a => a.UserId == userId)
+                    .Where(a => a.User.UserName == _userAccessor.GetCurrentUsername())
                     .OrderBy(a => a.Book.Name)
-                    .Select(a => new UserBookFavoriteDto
+                    .Select(r => new UserBookDto()
                     {
-
-                        NameBook = a.Book.Name,
-                        LastNameAuthor = string.Join(", ", a.Book.AuthorBooks.Select(ab => ab.Author.LastName)),
-                        Avatar = a.Book.Avatar
+                        NameBook = r.Book.Name,
+                        Description = r.Book.Description,
+                        Authors = string.Join(", ", r.Book.AuthorBooks.Select(a => $"{a.Author.FirstName} {a.Author.LastName}")),
+                        Genres = string.Join(", ", r.Book.GenreBooks.Select(a => a.Genre.Name)),
+                        AvatarId = r.Book.AvatarId,
+                        Id = r.BookId,
+                        IsRead = r.Book.UsersBookReads.Any(b => b.UserId == r.UserId),
+                        IsWantToRead = r.Book.UsersBookWantToReads.Any(b => b.UserId == r.UserId),
+                        IsToFavorite = true,
                     });
                 var result = await ToPageAsync(query, request.Page, request.PageSize);
                 return result;

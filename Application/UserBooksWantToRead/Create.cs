@@ -1,5 +1,6 @@
 ﻿using Domain.Context;
 using Domain.Errors;
+using Domain.Helpers.JWT;
 using Domain.Models.Books;
 using FluentValidation;
 using MediatR;
@@ -28,18 +29,25 @@ namespace Application.UserBooksWantToRead
         public class Handler : IRequestHandler<Request, bool>
         {
             private readonly AppDbContext _dbContext;
-            public Handler(AppDbContext dbContext)
+            private readonly UserAccessor _userAccessor;
+
+            public Handler(AppDbContext dbContext, UserAccessor userAccessor)
             {
                 _dbContext = dbContext;
+                _userAccessor = userAccessor;
             }
 
             public async Task<bool> Handle(Request request, CancellationToken cancellationToken)
             {
-                var userId = Guid.Parse("5bf3415c-b87d-4859-b21f-0e604d8a1730");
+                var userId = _dbContext.Users.Where(u => u.UserName == _userAccessor.GetCurrentUsername()).Select(u => u.Id).FirstOrDefault();
                 var anyBook = _dbContext.UserBookWantToReads
                     .Any(userBookWantToRead => userBookWantToRead.BookId == request.BookId && userBookWantToRead.UserId == userId);
                 if (anyBook)
                     throw new RestException(System.Net.HttpStatusCode.BadRequest, "Данная книга уже присутствует в списке.");
+                var anyBookRead = _dbContext.UserBookReads
+                        .Any(userBookWantToRead => userBookWantToRead.BookId == request.BookId && userBookWantToRead.UserId == userId);
+                if (anyBookRead)
+                    throw new RestException(System.Net.HttpStatusCode.BadRequest, "Данная книга уже прочитана.");
                 var userBookWantToRead = new UserBookWantToRead()
                 {
                     BookId = request.BookId,

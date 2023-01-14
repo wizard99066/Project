@@ -1,0 +1,6 @@
+.list_book_header {
+    font-size: 45px;
+    font-weight: 500;
+    display: flex;
+    justify-content: center; 
+}

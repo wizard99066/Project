@@ -10,7 +10,8 @@ import history from '../../helpers/history'
 export const userActions = {
 	login,
 	logout,
-	refreshUserData
+	refreshUserData,
+	register
 }
 
 function login(values){
@@ -18,6 +19,20 @@ function login(values){
 		constants : userConstants.Login,
 		service   : {
 			func   : agent.User.login,
+			params : values
+		},
+		sucFunction: () => {
+			history.push('/account')
+		}
+	}
+	return defAction(dispatchObj)
+}
+
+function register(values){
+	const dispatchObj = {
+		constants : userConstants.Register,
+		service   : {
+			func   : agent.User.register,
 			params : values
 		}
 	}
@@ -29,11 +44,8 @@ function logout(){
 	const sessionId = JSON.parse(jsonUser).sessionId
 	const dispatchObj = {
 		constants   : userConstants.Logout,
-		sucFunction : (url) => {
+		sucFunction : () => {
 			history.push('/')
-			window.localStorage.removeItem("idToken")
-			if (!(url === false || url === true || url === undefined || url === null || url === ""))
-				window.location.href = url
 		},
 		service: {
 			func   : agent.User.logout,

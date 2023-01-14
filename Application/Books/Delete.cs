@@ -1,14 +1,10 @@
 ﻿using Domain.Context;
-using Domain.Models.Books;
 using FluentValidation;
 using MediatR;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using static Application.Account.Login;
 
 namespace Application.Books
 {
@@ -37,7 +33,7 @@ namespace Application.Books
 
             public async Task<bool> Handle(Request request, CancellationToken cancellationToken)
             {
-                
+
                 var book = _dbContext.Books.Where(b => b.Id == request.Id).FirstOrDefault();
 
                 if (book == null) throw new Exception("Книга не найдена");

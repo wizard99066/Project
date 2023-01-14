@@ -36,6 +36,10 @@ const LoadableListBooks= Loadable({
 	loader  : () => import('../containers/Books/List'),
 	loading : () => <Loading />
 })
+const LoadableAccount= Loadable({
+	loader  : () => import('../containers/Account/index'),
+	loading : () => <Loading />
+})
 
 export const homeLoadables = {
 	LoadableHome,
@@ -45,5 +49,6 @@ export const homeLoadables = {
 	LoadableBooks,
 	LoadableGenres,
 	LoadablePublishings,
-	LoadableListBooks
+	LoadableListBooks,
+	LoadableAccount
 }

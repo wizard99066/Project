@@ -8,6 +8,9 @@ import authorReducer from '../../containers/Authors/store/reducer'
 import bookReducer from '../../containers/Books/store/reducer'
 import genreReducer from '../../containers/Genres/store/reducer'
 import publishingReducer from '../../containers/Publishings/store/reducer'
+import userBookReadReducer from '../../containers/UserBookRead/store/reducer'
+import userBookWantToReadReducer from '../../containers/UserBookWantToRead/store/reducer'
+import userBookFavoriteReducer from '../../containers/UserBookFavorite/store/reducer'
 import {
 	routerReducer
 }from "react-router-redux"
@@ -20,5 +23,8 @@ export default combineReducers({
 	authorReducer,
 	bookReducer,
 	genreReducer,
-	publishingReducer
+	publishingReducer,
+	userBookReadReducer,
+	userBookWantToReadReducer,
+	userBookFavoriteReducer
 })

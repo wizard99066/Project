@@ -1,8 +1,8 @@
 import {
-	List, Space, Form, Select, Input, Pagination
+	List, Form, Select, Input, Pagination, Tooltip
 }from 'antd'
-import {
-	StarOutlined, LikeOutlined, MessageOutlined
+import Icon, {
+	StarOutlined, StarTwoTone, BookOutlined, BookTwoTone, SaveOutlined, SaveTwoTone
 }from '@ant-design/icons'
 import React, {
 	useState, useEffect
@@ -21,25 +21,48 @@ import {
 	bookActions
 }from '../store/actions'
 import {
+	userBookFavoriteActions
+}from '../../UserBookFavorite/store/actions'
+import {
+	userBookReadActions
+}from '../../UserBookRead/store/actions'
+import {
+	userBookWantToReadActions
+}from '../../UserBookWantToRead/store/actions'
+import {
 	useDebounce
 }from 'use-lodash-debounce'
-
-const IconText = ({ icon, text }) => (
-	<Space>
-		{ React.createElement(icon) }
-		{ text }
-	</Space>
+import emptyAvatar from "../../../../public/EmptyAvatar.jpg"
+import Notifications from '../../../helpers/Notifications'
+const IconText = ({ icon, text, isSending, onClick }) => (
+	<Tooltip
+		placement="top"
+		title={ text }
+	>
+		<Icon
+			component={ icon }
+			style={ { fontSize : "32px",
+				cursor   : "pointer" } }
+			onClick={ () => {
+				if (!isSending)
+					onClick()
+			} }
+		/>
+	</Tooltip>
 )
 const ListBooks = () => {
 	const dispatch = useDispatch()
 	const [filter, setFilter] = useState({})
 	const searchFilter = useDebounce(filter, 500)
 	const [page, setPage] = useState(1)
-	const [form] = Form.useForm()
 
+	const { user } = useSelector((state) => state.userReducer)
 	const { isSending, paged } = useSelector((state) => state.bookReducer)
 	const { list: listGenres } = useSelector((state) => state.genreReducer)
 	const { list: listAuthors } = useSelector((state) => state.authorReducer)
+	const { changed: changedFavorite, isSending: isSendingFavorite } = useSelector((state) => state.userBookFavoriteReducer)
+	const { changed: changedRead, isSending: isSendingRead } = useSelector((state) => state.userBookReadReducer)
+	const { changed: changedWantToRead, isSending: isSendingWantToRead } = useSelector((state) => state.userBookWantToReadReducer)
 
 	const findGenres = params => {
 		dispatch(genreActions.search(params))
@@ -50,14 +73,54 @@ const ListBooks = () => {
 	const getPages = (values) => {
 		dispatch(bookActions.getPagedForUsers(values))
 	}
+	const toFavorite = (values) => {
+		dispatch(userBookFavoriteActions.create(values))
+	}
+	const notToFavorite = (values) => {
+		dispatch(userBookFavoriteActions.remove(values))
+	}
+	const toRead = (values) => {
+		dispatch(userBookReadActions.create(values))
+	}
+	const notToRead = (values) => {
+		dispatch(userBookReadActions.remove(values))
+	}
+	const wantToRead = (values) => {
+		dispatch(userBookWantToReadActions.create(values))
+	}
+	const notWantToRead = (values) => {
+		dispatch(userBookWantToReadActions.remove(values))
+	}
 
 	function onFilter(value, values){
 		setFilter(values)
 	}
 
 	useEffect(() => {
+		if (changedFavorite){
+			Notifications.successNotice(changedFavorite)
+			dispatch(userBookFavoriteActions.clear())
+			onPaginationChange(page)
+		}
+		if (changedRead){
+			Notifications.successNotice(changedRead)
+			dispatch(userBookReadActions.clear())
+			onPaginationChange(page)
+		}
+		if (changedWantToRead){
+			Notifications.successNotice(changedWantToRead)
+			dispatch(userBookWantToReadActions.clear())
+			onPaginationChange(page)
+		}
+	}, [
+		changedFavorite,
+		changedRead,
+		changedWantToRead
+	])
+
+	useEffect(() => {
 		onPaginationChange(1)
-	}, [searchFilter])
+	}, [searchFilter, user])
 
 	function onPaginationChange(value){
 		setPage(value)
@@ -72,6 +135,9 @@ const ListBooks = () => {
 
 	return (
 		<div className="page">
+			<p className="list_book_header">
+				Что почитать?
+			</p>
 			<div className="filter">
 				<Form
 				 labelCol={ { span: 5 } }
@@ -139,31 +205,44 @@ const ListBooks = () => {
 				renderItem={ (book) => (
 					<List.Item
 						key={ book.title }
-						actions={ [
-							<IconText
-								key="list-vertical-star-o"
-								icon={ StarOutlined }
-								text="156"
-							/>,
-							<IconText
-								key="list-vertical-like-o"
-								icon={ LikeOutlined }
-								text="156"
-							/>,
-							<IconText
-								key="list-vertical-message"
-								icon={ MessageOutlined }
-								text="2"
-							/>
-						] }
+						actions={ user
+							? [
+								<IconText
+									key="isToFavorite"
+									icon={ book.isToFavorite ? StarTwoTone : StarOutlined }
+									isSending={ isSendingFavorite }
+									text={ book.isToFavorite ? "Убрать из избранного" : "Добавить в избранное" }
+									onClick={ () => {
+										book.isToFavorite ? notToFavorite({ bookId: book.id }) : toFavorite({ bookId: book.id })
+									} }
+								/>,
+								<IconText
+									key="isWantToRead"
+									icon={ book.isWantToRead ? BookTwoTone : BookOutlined }
+									isSending={ isSendingWantToRead }
+									text={ book.isWantToRead ? "Прочитаю позже " : "Хочу прочитать" }
+									onClick={ () => {
+										book.isWantToRead ? notWantToRead({ bookId: book.id }) : wantToRead({ bookId: book.id })
+									} }
+								/>,
+								<IconText
+									key="isRead"
+									icon={ book.isRead ? SaveTwoTone : SaveOutlined }
+									isSending={ isSendingRead }
+									text={ book.isRead ? "Убрать из прочитанного" : "Добавить в прочитанное" }
+									onClick={ () => {
+										book.isRead ? notToRead({ bookId: book.id }) : toRead({ bookId: book.id })
+									} }
+								/>
+							]
+							: [] }
 					>
 						<List.Item.Meta
-							avatar={ book.avatarId
-								? (<img
-									src={ `https://localhost:44313/api/Book/GetAvatar?Id=${ book.avatarId }` }
+							avatar={ (
+								<img
+									src={ book.avatarId ? `https://localhost:44313/api/Book/GetAvatar?Id=${ book.avatarId }` : emptyAvatar }
 									width={ 300 }
-								   />)
-								: null }
+								/>) }
 							description={ (<>
 								<p className="nameAuthorsAndGenres">
 

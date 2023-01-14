@@ -1,8 +1,10 @@
 ﻿using Application.Books.Dto;
 using Domain.Context;
+using Domain.Helpers.JWT;
 using Domain.Models.Users;
 using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,14 +36,18 @@ namespace Application.Books
         public class Handler : BaseService<UserBookDto>, IRequestHandler<Request, PageItems<UserBookDto>>
         {
             private readonly AppDbContext _dbContext;
-            public Handler(AppDbContext dbContext)
+            private readonly UserAccessor _userAccessor;
+
+            public Handler(AppDbContext dbContext, UserAccessor userAccessor)
             {
                 _dbContext = dbContext;
+                _userAccessor = userAccessor;
             }
 
             public async Task<PageItems<UserBookDto>> Handle(Request request, CancellationToken cancellationToken)
             {
-                var userId = Guid.Parse("5bf3415c-b87d-4859-b21f-0e604d8a1730");
+                string userName = _userAccessor.GetCurrentUsername();
+                var userId = await _dbContext.Users.Where(u => u.UserName == userName).Select(u => u.Id).FirstOrDefaultAsync();
                 request.BookName = request.BookName?.Trim().ToLower();
 
                 var query = _dbContext.Books.Where(r => (string.IsNullOrEmpty(request.BookName) || r.Name.Trim().ToLower().Contains(request.BookName)) &&
@@ -60,7 +66,6 @@ namespace Application.Books
                         IsRead = r.UsersBookReads.Any(UserBookReads => UserBookReads.UserId == userId),
                         IsWantToRead = r.UsersBookWantToReads.Any(r => r.UserId == userId),
                         IsToFavorite = r.UsersBookFavorites.Any(r => r.UserId == userId),
-
                     })
                     .OrderBy(r => r.NameBook);
 

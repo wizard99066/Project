@@ -17,7 +17,6 @@ import "dayjs/locale/ru"
 import dayjs from 'dayjs'
 import './style.css'
 import Notifications from '../../helpers/Notifications'
-import moment from 'moment'
 import {
 	useDebounce
 }from 'use-lodash-debounce'
@@ -53,7 +52,7 @@ const Authors = () => {
 			form.setFieldsValue({
 				firstName : record.firstName,
 				lastName  : record.lastName,
-				birthday  : dayjs(record.birthday, 'DD.MM.YYYY')//moment(record.birthday)
+				birthday  : dayjs(record.birthday, 'DD.MM.YYYY')
 			})
 		}
 	}, [record])

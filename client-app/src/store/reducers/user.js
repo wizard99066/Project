@@ -4,11 +4,11 @@ import {
 
 const initialState = {
 	//login;
-	isLoading      : false,
-	isLoginLoading : false,
-	user           : undefined,
-	roles          : [],
-	userTypeName   : undefined
+	isLoading       : false,
+	isLoginLoading  : false,
+	registerMessage : null,
+	user            : undefined,
+	roles           : []
 }
 
 export default function (state = initialState, action){
@@ -17,23 +17,21 @@ export default function (state = initialState, action){
 		case userConstants.Login.REQUEST:
 			return {
 				...state,
-				isLoginLoading : true,
-				loginError     : null
+				isLoginLoading  : true,
+				registerMessage : null
 			}
 		case userConstants.Login.SUCCESS:
-			let user = action.payload.result
 			window.localStorage.setItem("user", JSON.stringify({
-				userName     : user.userName,
-				token        : user.token,
-				refreshToken : user.refreshToken,
-				sessionId    : user.sessionId
+				userName     : action.payload.result.userName,
+				token        : action.payload.result.token,
+				refreshToken : action.payload.result.refreshToken,
+				sessionId    : action.payload.result.sessionId
 			}))
 			return {
 				...state,
 				isLoginLoading : false,
-				user           : user,
-				roles          : user.roles,
-				userTypeName   : user?.userType?.name
+				user           : action.payload.result,
+				roles          : action.payload.result.roles
 			}
 		case userConstants.Login.FAILURE:
 			return {
@@ -45,19 +43,14 @@ export default function (state = initialState, action){
 		case userConstants.RefreshUserData.REQUEST:
 			return {
 				...state,
-				isLoading            : true,
-				isChangedProfileData : false
+				isLoading: true
 			}
 		case userConstants.RefreshUserData.SUCCESS:
-			user = action.payload.result
-			if (!user)
-				user = null
 			return {
 				...state,
-				isLoading    : false,
-				user         : user,
-				roles        : user ? user.roles : [],
-				userTypeName : user && user.userType ? user.userType.name : undefined
+				isLoading : false,
+				user      : action.payload.result,
+				roles     : action.payload.result ? action.payload.result.roles : []
 			}
 		case userConstants.RefreshUserData.FAILURE:
 			return {
@@ -75,20 +68,35 @@ export default function (state = initialState, action){
 			window.localStorage.removeItem("user")
 			return {
 				...state,
-				isLoading    : false,
-				user         : undefined,
-				roles        : [],
-				userTypeName : undefined,
-				data         : action.payload.result
+				isLoading : false,
+				user      : null,
+				roles     : []
 			}
 		case userConstants.Logout.FAILURE:
 			return {
 				...state,
-				isLoading    : false,
-				user         : null,
-				roles        : [],
-				userTypeName : undefined,
-				error        : action.err
+				isLoading : false,
+				user      : null,
+				roles     : []
+			}
+
+		//register;
+		case userConstants.Register.REQUEST:
+			return {
+				...state,
+				isLoginLoading  : true,
+				registerMessage : null
+			}
+		case userConstants.Register.SUCCESS:
+			return {
+				...state,
+				registerMessage : "Вы успешно зарегистрированы в системе.",
+				isLoginLoading  : false
+			}
+		case userConstants.Register.FAILURE:
+			return {
+				...state,
+				isLoginLoading: false
 			}
 		default:
 			return state

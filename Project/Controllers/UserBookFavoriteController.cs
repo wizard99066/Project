@@ -1,6 +1,7 @@
 ﻿using Application;
+using Application.Books.Dto;
 using Application.UserBooksFavorite;
-using Application.UserBooksFavorite.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -9,23 +10,22 @@ namespace Project.Controllers
     public class UserBookFavoriteController : BaseController
     {
         [HttpGet("Create")]
+        [Authorize]
         public async Task<bool> Create([FromHeader] Create.Request request)
         {
             return await Mediator.Send(request);
         }
 
-
-
         [HttpGet("Delete")]
+        [Authorize]
         public async Task<bool> Delete([FromHeader] Delete.Request request)
         {
             return await Mediator.Send(request);
         }
 
-
-
         [HttpGet("GetPaged")]
-        public async Task<PageItems<UserBookFavoriteDto>> GetPaged([FromHeader] GetPaged.Request request)
+        [Authorize]
+        public async Task<PageItems<UserBookDto>> GetPaged([FromHeader] GetPaged.Request request)
         {
             return await Mediator.Send(request);
         }

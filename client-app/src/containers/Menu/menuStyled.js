@@ -1,16 +1,15 @@
 import styled from 'styled-components'
 import {
 	Col, Layout
-} from 'antd'
-
-
+}from 'antd'
 
 const {
 	Header
 } = Layout
 
 export const StyledHeader = styled(Header)`
-  ${ props => props.propp.isHome ? `
+  ${ props => (props.propp.isHome
+		? `
 
     @media (max-width: 730px) {
     //height: 60vh;
@@ -20,17 +19,18 @@ export const StyledHeader = styled(Header)`
   }
    @media (max-width: 700px) {
    // height: 60vh;
-  ` : '' };
+  `
+		: '') };
     
 `
 
-export const StyledMenuCol_1 = styled(Col)`
+export const StyledMenuCol1 = styled(Col)`
   @media (max-width: 1200px) {
     display: none;
   }
 `
 
-export const StyledMenuCol_2 = styled(Col)`
+export const StyledMenuCol2 = styled(Col)`
   @media (max-width: 1200px) {
   .main-nav{
   display: block;
@@ -227,8 +227,4 @@ flex-flow: row;
   }
   }
 `
-
-
-
-
 

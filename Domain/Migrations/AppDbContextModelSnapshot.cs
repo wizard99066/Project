@@ -271,6 +271,37 @@ namespace Domain.Migrations
                     b.ToTable("Files");
                 });
 
+            modelBuilder.Entity("Domain.Models.Users.RefreshToken", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTimeOffset>("Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("IP")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserAgent")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RefreshTokens");
+                });
+
             modelBuilder.Entity("Domain.Models.Users.Role", b =>
                 {
                     b.Property<Guid>("Id")
@@ -535,7 +566,7 @@ namespace Domain.Migrations
             modelBuilder.Entity("Domain.Models.Books.UserBookFavorites", b =>
                 {
                     b.HasOne("Domain.Models.Books.Book", "Book")
-                        .WithMany()
+                        .WithMany("UsersBookFavorites")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -554,7 +585,7 @@ namespace Domain.Migrations
             modelBuilder.Entity("Domain.Models.Books.UserBookRead", b =>
                 {
                     b.HasOne("Domain.Models.Books.Book", "Book")
-                        .WithMany()
+                        .WithMany("UsersBookReads")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -573,7 +604,7 @@ namespace Domain.Migrations
             modelBuilder.Entity("Domain.Models.Books.UserBookWantToRead", b =>
                 {
                     b.HasOne("Domain.Models.Books.Book", "Book")
-                        .WithMany()
+                        .WithMany("UsersBookWantToReads")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -585,6 +616,17 @@ namespace Domain.Migrations
                         .IsRequired();
 
                     b.Navigation("Book");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Models.Users.RefreshToken", b =>
+                {
+                    b.HasOne("Domain.Models.Users.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -656,6 +698,12 @@ namespace Domain.Migrations
                     b.Navigation("GenreBooks");
 
                     b.Navigation("Publishings");
+
+                    b.Navigation("UsersBookFavorites");
+
+                    b.Navigation("UsersBookReads");
+
+                    b.Navigation("UsersBookWantToReads");
                 });
 
             modelBuilder.Entity("Domain.Models.Users.Role", b =>

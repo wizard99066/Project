@@ -7,13 +7,14 @@ axios.defaults.baseURL =
   	: `${ window.location.origin }/api`
 axios.defaults.headers['Pragma'] = 'no-cache'
 axios.defaults.headers['Cache-Control'] = 'no-cache, no-store'
-axios.interceptors.request.use((config) => {
-	const language = window.localStorage.getItem('language')
-	if (language)
-		config.headers['Accept-Language'] = language
-
+axios.interceptors.request.use(config => {
+	const jsonUser = window.localStorage.getItem('user')
+	if (jsonUser){
+		const user = JSON.parse(jsonUser)
+		config.headers.Authorization = `Bearer ${ user.token }`
+	}
 	return config
-}, (error) => {
+}, error => {
 	return Promise.reject(error)
 })
 
@@ -53,12 +54,8 @@ axios.interceptors.response.use(undefined, (error) => {
 		else if (!originalRequest.url.includes('refreshUserData'))
 			message()
 	}
-	else if (
-		error.response.status == 403 &&
-    error.response.data.errors == 'Invalid RefreshToken'
-	){
-		const jsonUser = window.localStorage.getItem('user')
-		if (jsonUser)
+	else if (error.response.status == 403 && error.response.data.errors == 'Невалидный RefreshToken'){
+		if (window.localStorage.getItem('user'))
 			message()
 	}
 	else
@@ -121,6 +118,7 @@ export const requests = {
 const User = {
 	login           : (user) => requests.post('/account/login', user),
 	logout          : (data) => requests.post('/account/logout', data),
+	register        : (data) => requests.post('/account/register', data),
 	refreshUserData : () => requests.get('/account/refreshUserData')
 }
 

@@ -32,12 +32,6 @@ flex: 1 0 auto;
   padding: 50px 20px 30px 20px;
 }
 
-.ant-modal-header{
-  padding-top: 32px;
-  border-bottom: none;
-  padding-bottom: 40px;
-}
-
 .ant-modal-body{
   padding: 32px 40px;
 }

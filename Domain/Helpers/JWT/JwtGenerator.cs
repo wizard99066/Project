@@ -79,10 +79,6 @@ namespace Domain.Helpers.JWT
             {
                 throw new Exception("Token expired");
             }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
         }
 
         public string GetUserameFromExpiredToken(string token)

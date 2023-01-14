@@ -18,7 +18,7 @@ import {
 
 const Routes = () => {
 	const dispatch = useDispatch()
-	const { user } = useSelector((state) => state.userReducer)
+	const { user, roles } = useSelector((state) => state.userReducer)
 
 	useEffect(() => {
 		if (user === undefined)
@@ -27,45 +27,47 @@ const Routes = () => {
 
 	return (
 		<Switch>
-			<Route
-				exact
-				component={ homeLoadables.LoadableAuthors }
-				path="/authors"
-			></Route>
-			<Route
-				exact
-				component={ homeLoadables.LoadableHome }
-				path="/"
-			/>
-			<Route
-				exact
-				component={ homeLoadables.LoadableLogin }
-				path="/login"
-			/>
-			<Route
-				exact
-				component={ homeLoadables.LoadablePasswordRecovery }
-				path="/passwordRecovery"
-			/>
-			<Route
-				exact
-				component={ homeLoadables.LoadableBooks }
-				path="/books"
-			></Route>
+			{ roles.includes("admin") &&
+			(
+				<Route
+					exact
+					component={ homeLoadables.LoadableAuthors }
+					path="/authors"
+				/>
+			) }
+			{ roles.includes("admin") &&
+			(
+				<Route
+					exact
+					component={ homeLoadables.LoadableBooks }
+					path="/books"
+				></Route>
+			) }
+			{ roles.includes("admin") &&
+			(
+				<Route
+					exact
+					component={ homeLoadables.LoadableGenres }
+					path="/genres"
+				></Route>) }
+			{ roles.includes("admin") &&
+			(
+				<Route
+					exact
+					component={ homeLoadables.LoadablePublishings }
+					path="/publishings"
+				></Route>) }
+			{ roles.length > 0 &&
+			(
+				<Route
+					exact
+					component={ homeLoadables.LoadableAccount }
+					path="/account"
+				></Route>) }
 			<Route
 				exact
 				component={ homeLoadables.LoadableListBooks }
-				path="/listBooks"
-			></Route>
-			<Route
-				exact
-				component={ homeLoadables.LoadableGenres }
-				path="/genres"
-			></Route>
-			<Route
-				exact
-				component={ homeLoadables.LoadablePublishings }
-				path="/publishings"
+				path="/"
 			></Route>
 			<Route
 				exact

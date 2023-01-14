@@ -30,5 +30,10 @@ export const bookConstants = {
 		SUCCESS : "BOOK_GETBYID_SUCCESS",
 		FAILURE : "BOOK_GETBYID_FAILURE"
 	},
+	GetPagedForUsers: {
+		REQUEST : "BOOK_GetPagedForUsers_REQUEST",
+		SUCCESS : "BOOK_GetPagedForUsers_SUCCESS",
+		FAILURE : "BOOK_GetPagedForUsers_FAILURE"
+	},
 	Clear: "BOOK_CLEAR"
 }

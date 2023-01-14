@@ -74,8 +74,7 @@ ul.ant-menu>li.ant-menu-submenu.ant-menu-submenu-vertical-left.sub-menu sup.ant-
 
 
 .main-nav {
-    display: table;
-    margin: 0 auto;
+    float: right;
 }
 .main-nav-3 {
     width: fit-content;
@@ -233,7 +232,7 @@ ul.ant-menu>li.ant-menu-submenu.ant-menu-submenu-vertical-left.sub-menu sup.ant-
 }
 
 .sticky .main-nav ul {
-    margin-top: 20px;
+    margin-top: 0px;
 }
 
 .sticky .main-nav-2 ul {
