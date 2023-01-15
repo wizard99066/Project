@@ -215,6 +215,7 @@ const Authors = () => {
 				className="modal"
 				footer={ null }
 				open={ isModalVisible }
+				width="800px"
 				onCancel={ () => {
 					form.resetFields()
 					setIsModalVisible(false)

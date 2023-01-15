@@ -56,7 +56,7 @@ const ListBooks = () => {
 	const searchFilter = useDebounce(filter, 500)
 	const [page, setPage] = useState(1)
 
-	const { user } = useSelector((state) => state.userReducer)
+	const { user, roles } = useSelector((state) => state.userReducer)
 	const { isSending, paged } = useSelector((state) => state.bookReducer)
 	const { list: listGenres } = useSelector((state) => state.genreReducer)
 	const { list: listAuthors } = useSelector((state) => state.authorReducer)
@@ -205,7 +205,7 @@ const ListBooks = () => {
 				renderItem={ (book) => (
 					<List.Item
 						key={ book.title }
-						actions={ user
+						actions={ user && !roles.includes("admin")
 							? [
 								<IconText
 									key="isToFavorite"
@@ -272,7 +272,14 @@ const ListBooks = () => {
 						pageSize={ 10 }
 						size="small"
 						total={ paged.count }
-						onChange={ onPaginationChange }
+						onChange={ (page) => {
+							onPaginationChange(page)
+							window.scrollTo({
+								top      : 0,
+								left     : 0,
+								behavior : "smooth"
+						  })
+						} }
 					/>)
 				: null }
 		</div>

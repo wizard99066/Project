@@ -10,21 +10,21 @@ namespace Project.Controllers
     public class UserBookFavoriteController : BaseController
     {
         [HttpGet("Create")]
-        [Authorize]
+        [Authorize(Roles = "user")]
         public async Task<bool> Create([FromHeader] Create.Request request)
         {
             return await Mediator.Send(request);
         }
 
         [HttpGet("Delete")]
-        [Authorize]
+        [Authorize(Roles = "user")]
         public async Task<bool> Delete([FromHeader] Delete.Request request)
         {
             return await Mediator.Send(request);
         }
 
         [HttpGet("GetPaged")]
-        [Authorize]
+        [Authorize(Roles = "user")]
         public async Task<PageItems<UserBookDto>> GetPaged([FromHeader] GetPaged.Request request)
         {
             return await Mediator.Send(request);

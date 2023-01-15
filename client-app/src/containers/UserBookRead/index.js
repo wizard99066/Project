@@ -185,7 +185,14 @@ const ListBooks = () => {
 						pageSize={ 10 }
 						size="small"
 						total={ paged.count }
-						onChange={ (page) => setPage(page) }
+						onChange={ (page) => {
+							setPage(page)
+							window.scrollTo({
+								top      : 0,
+								left     : 0,
+								behavior : "smooth"
+						  })
+						} }
 					/>)
 				: null }
 		</div>

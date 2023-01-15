@@ -330,6 +330,7 @@ const Books = () => {
 					wrapperCol={ { span   : 16,
 						offset : 1 } }
 					onFinish={ onCreateAndUpdate }
+
 		   		>
 					<Form.Item
 						label="Название"
